@@ -2,8 +2,13 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-color: #F9F9EB !important;
 }
 
 main {
     flex: 1 0 auto;
+}
+
+.my-blue{
+    background-color: #092342 !important;
 }
