@@ -4,6 +4,7 @@
     <head>
         <meta charset='utf-8'>
         <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css' %}"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
         <link rel="stylesheet" href="{% static 'css/my_style.css' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         {% block titulo %}
@@ -13,13 +14,15 @@
         <header>
             <nav>
                 <div class="nav-wrapper my-blue">
-                    <a href="#!" class="center brand-logo">BroadUs</a>
-                    <ul class="right hide-on-med-and-down">
-                        <!--<li><a href="#!"><i class="material-icons">search</i></a></li>!-->
-                    </ul>
-                    <ul class="side-nav" id="mobile-demo">
-                        <!--<li><a href="#!"><i class="material-icons">search</i>Sass</a></li>!-->
-                    </ul>
+                    <div class="container">
+                        <a href="{% url 'brodus:index' %}" class="left brand-logo">BroadUs</a>
+                        <ul class="right hide-on-med-and-down">
+                            <li><a href="{% url 'brodus:log_in' %}"><i class="fa fa-user"></i></a></li>
+                        </ul>
+                        <ul class="side-nav" id="mobile-demo">
+                            <li><a href="{% url 'brodus:log_in' %}"><i class="fa fa-user"></i>Log-in</a></li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </header>
