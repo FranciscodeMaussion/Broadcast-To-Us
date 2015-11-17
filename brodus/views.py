@@ -46,3 +46,9 @@ def new_user(request):
         login(request, user)
     return render_to_response('a_user.html',
                               context)
+
+@login_required(login_url='/user/log_in')
+def log_out(request):
+    logout(request)
+    context = RequestContext(request)
+    return redirect('/')

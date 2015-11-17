@@ -3,4 +3,5 @@ urlpatterns = patterns('',
                        url(r'^$', 'brodus.views.index', name='index'),
                        url(r'^user/log_in$','brodus.views.log_in', name='log_in'),
                        url(r'^user/new$','brodus.views.new_user', name='new_user'),
+                       url(r'^user/log_out$','brodus.views.log_out', name='log_out'),
                       )
