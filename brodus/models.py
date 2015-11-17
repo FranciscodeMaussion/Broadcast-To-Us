@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-
-import re
-import uuid
-
-from django.core import validators
-from django.utils import timezone
-from django.core.mail import send_mail
-from django.utils.http import urlquote
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django import forms
-
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -70,16 +58,15 @@ class Proj(models.Model):
     def __str__(self):
         return self.nombre
 
-class MyUser(AbstractBaseUser):
-
-    email = models.EmailField('email address', unique=True, db_index=True, default="")
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+class Rol(models.Model):
+    class Meta:
+        verbose_name = "Rol"
+        verbose_name_plural = "Roles"
 
     trabajo = models.ForeignKey(Jobs)
     idioma = models.ForeignKey(Idioma)
     lenguaje = models.ForeignKey(Lenguaje)
+    user = models.OneToOneField(User, related_name="persona", default=0)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['trabajo','idioma','lenguaje','email']
-
+    def __str__(self):
+        return self.nombre
