@@ -4,17 +4,17 @@
 <title>Log in</title>
 {% endblock %}
 {% block content %}
-<div class="container">
-    <div class="card-panel my-card center-align">
+<div class="row">
+    <div class="card-panel my-card center-align col s4 offset-s4">
         <div class="container">
             <div class="input-field">
-                <input placeholder="Nombre de usuario" maxlength="30" name="username" id="id_username" type="text" value="">
+                <input placeholder="Nombre de usuario" class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
             </div>
             <div class="input-field">
-                <input placeholder="Contraseña" name="password" id="id_password1" type="password" class="validate" value="">
+                <input placeholder="Contraseña" class="white-text" name="password" id="id_password1" type="password" value="">
             </div>
             <div class="right-align">
-                <a href="" style="color:white">¿No tenés usuario? Tocá para crear uno.</a><br>
+                <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a><br>
                 <button class="card-panel my-button waves-effect waves-orange btn-large" id="log-in">
                     <i class="fa fa-paper-plane right"></i>Log In
                 </button>
