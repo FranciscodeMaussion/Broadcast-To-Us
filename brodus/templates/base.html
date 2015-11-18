@@ -17,10 +17,10 @@
                     <div class="container">
                         <a href="{% url 'brodus:index' %}" class="left brand-logo">BroadUs</a>
                         <ul class="right hide-on-med-and-down">
-                            <li><a href="{% url 'brodus:log_in' %}"><i class="fa fa-user"></i></a></li>
+                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href='{% if user.is_authenticated %}{% url 'brodus:log_out' %}' data-tooltip="Log_out"><i class='fa fa-sign-out'></i>{% else %}{% url 'brodus:log_in' %}' data-tooltip="Log_in"><i class='fa fa-sign-in'></i>{% endif %}</a></li>
                         </ul>
                         <ul class="side-nav" id="mobile-demo">
-                            <li><a href="{% url 'brodus:log_in' %}"><i class="fa fa-user"></i>Log-in</a></li>
+                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href='{% if user.is_authenticated %}{% url 'brodus:log_out' %}' data-tooltip="Log_out"><i class='fa fa-sign-out'></i>Log-out{% else %}{% url 'brodus:log_in' %}' data-tooltip="Log_in"><i class='fa fa-sign-in'></i>Log-in{% endif %}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -56,6 +56,9 @@
     <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
     <script>
         $(".button-collapse").sideNav();
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({delay: 50});
+        });
     </script>
     {% block scripts %}
     {% endblock %}
