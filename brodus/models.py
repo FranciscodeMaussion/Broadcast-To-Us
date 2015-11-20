@@ -12,7 +12,7 @@ class Lenguaje(models.Model):
     nombre = models.CharField(u'Nombre', max_length=200)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf8')
 
 class Idioma(models.Model):
     class Meta:
@@ -22,7 +22,7 @@ class Idioma(models.Model):
     nombre = models.CharField(u'Nombre', max_length=200)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf8')
 
 class Jobs(models.Model):
     class Meta:
@@ -33,7 +33,7 @@ class Jobs(models.Model):
     desc = models.CharField(u'Descripción', max_length=400)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf8')
 
 class Workers(models.Model):
     class Meta:
@@ -44,7 +44,7 @@ class Workers(models.Model):
     cantidad = models.IntegerField(u'Cantidad', default=0)
 
     def __str__(self):
-        return tipo.nombre
+        return tipo.nombre.encode('utf8')
 
 class Proj(models.Model):
     class Meta:
@@ -59,17 +59,18 @@ class Proj(models.Model):
     owner = models.ForeignKey(User, default=None)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf8')
 
 class Rol(models.Model):
     class Meta:
         verbose_name = "Rol"
         verbose_name_plural = "Roles"
 
-    trabajo = models.ForeignKey(Jobs)
-    idioma = models.ForeignKey(Idioma)
-    lenguaje = models.ForeignKey(Lenguaje)
+    trabajo = models.ManyToManyField(Jobs)
+    idioma = models.ManyToManyField(Idioma)
+    lenguaje = models.ManyToManyField(Lenguaje)
     user = models.OneToOneField(User, related_name="persona", default=None)
+    nombre = models.CharField(u'Nombre', max_length=200, default=None, blank=True, null=True)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf8')
