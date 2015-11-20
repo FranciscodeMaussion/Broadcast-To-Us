@@ -12,16 +12,25 @@
     </head>
     <body>
         <header>
-            <nav>
+            <nav role="navigation">
                 <div class="nav-wrapper my-blue">
                     <div class="container">
-                        <a href="{% url 'brodus:index' %}" class="left brand-logo">BroadUs</a>
+                        <a href="{% url 'brodus:index' %}" class="brand-logo">BroadUs</a>
                         <ul class="right hide-on-med-and-down">
-                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href='{% if user.is_authenticated %}{% url 'brodus:log_out' %}' data-tooltip="Log_out"><i class='fa fa-sign-out'></i>{% else %}{% url 'brodus:log_in' %}' data-tooltip="Log_in"><i class='fa fa-sign-in'></i>{% endif %}</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_out' %}" data-tooltip="Log_out"><i class='fa fa-sign-out'></i></a></li>
+                                {% else %}
+                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_in' %}" data-tooltip="Log_in"><i class='fa fa-sign-in'></i></a></li>
+                                {% endif %}
                         </ul>
-                        <ul class="side-nav" id="mobile-demo">
-                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href='{% if user.is_authenticated %}{% url 'brodus:log_out' %}' data-tooltip="Log_out"><i class='fa fa-sign-out'></i>Log-out{% else %}{% url 'brodus:log_in' %}' data-tooltip="Log_in"><i class='fa fa-sign-in'></i>Log-in{% endif %}</a></li>
+                        <ul class="side-nav" style="right: -250px;" id="mobile-demo">
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'brodus:log_out' %}"><i class='fa fa-sign-out fa-fw left'></i>Log-out</a></li>
+                            {% else %}
+                            <li><a href="{% url 'brodus:log_in' %}"><i class='fa fa-sign-in fa-fw left'></i>Log-in</a></li>
+                            {% endif %}
                         </ul>
+                        <a class="waves-effect circle button-collapse" href="#" data-activates="mobile-demo"><i class="fa fa-bars"></i></a>
                     </div>
                 </div>
             </nav>
@@ -58,6 +67,7 @@
         $(".button-collapse").sideNav();
         $(document).ready(function(){
             $('.tooltipped').tooltip({delay: 50});
+            $('select').material_select();
         });
     </script>
     {% block scripts %}

@@ -5,13 +5,17 @@
 {% endblock %}
 {% block content %}
 <div class="row">
-    <div class="card-panel my-card center-align col s4 offset-s4">
+    <div class="card-panel my-card col s12 m6 push-m3 l4 push-l4">
         <div class="container">
             <div class="input-field">
-                <input placeholder="Nombre de usuario" class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
+                <i class="fa fa-user prefix"></i>
+                <input class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
+                <label for="id_username">Nombre de usuario</label>
             </div>
             <div class="input-field">
-                <input placeholder="Contraseña" class="white-text" name="password" id="id_password1" type="password" value="">
+                <i class="fa fa-lock prefix"></i>
+                <input class="white-text" name="password" id="id_password1" type="password" value="">
+                <label for="id_paassword">Contraseña</label>
             </div>
             <div class="right-align">
                 <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a><br>
