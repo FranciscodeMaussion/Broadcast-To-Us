@@ -6,27 +6,67 @@
 {% block content %}
 <div class="container">
     <div class="card-panel my-card">
-        <div class="row">
-            <div class="input-field col s6">
-                <input class="white-text" placeholder="Nombre de usuario" maxlength="30" name="username" id="id_username" type="text" value="">
-                <span class="helptext white-text">Obligatorio. Longitud máxima de 30 caracteres. Sólo puede estar formado por letras, números, guiones y puntos</span>
+        <form action="{% url 'brodus:new_user' %}" method="POST" enctype="multipart/form-data" id="create_user">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12 m6 l6">
+                    <i class="fa fa-user prefix"></i>
+                    <input class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
+                    <label for="id_username">Nombre de usuario</label>
+                    <span class="helptext white-text">Obligatorio. Longitud máxima de 30 caracteres. Sólo puede estar formado por letras, números, guiones y puntos</span>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <i class="fa fa-envelope prefix"></i>
+                    <input class="white-text" name="email" id="id_email" type="text" value="">
+                    <label for="id_email">Email</label>
+                </div>
             </div>
-            <div class="input-field col s6">
-                <input class="white-text" placeholder="Email" name="email" id="id_email" type="text" value="">
+            <div class="row">
+                <div class="input-field col s12 m6 l6">
+                    <i class="fa fa-lock prefix"></i>
+                    <input class="white-text" name="password1" id="id_password1" type="password" class="validate" value="">
+                    <label for="id_paassword1">Contraseña</label>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <i class="fa fa-lock prefix"></i>
+                    <input class="white-text" name="password2" id="id_password2" type="password" value="">
+                    <label for="id_paassword2">Confirmación de contraseña</label>
+                    <span class="helptext white-text">Para verificación, introduzca la misma contraseña que introdujo en el campo anterior.</span>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s6">
-                <input class="white-text" placeholder="Contraseña" name="password1" id="id_password1" type="password" class="validate" value="">
+            <div class="row">
+                <div class="input-field col s12 m4 l4">
+                    <select multiple class="white-text" name="trabajos" id="trabajos">
+                        <option value="" disabled selected>Elije</option>
+                        {% for trabajo in trabajos %}
+                        <option value="{{trabajo.id}}">{{trabajo}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Trabajo</label>
+                </div>
+                <div class="input-field col s12 m4 l4">
+                    <select multiple class="white-text" name="idiomas" id="idiomas">
+                        <option value="" disabled selected>Elije</option>
+                        {% for idioma in idiomas %}
+                        <option value="{{idioma.id}}">{{idioma}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Idioma</label>
+                </div>
+                <div class="input-field col s12 m4 l4">
+                    <select multiple class="white-text" name="lenguajes" id="lenguajes">
+                        <option value="" disabled selected>Elije</option>
+                        {% for lenguaje in lenguajes %}
+                        <option value="{{lenguaje.id}}">{{lenguaje}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Lenguaje</label>
+                </div>
             </div>
-            <div class="input-field col s6">
-                <input class="white-text" placeholder="Confirmación de contraseña" name="password2" id="id_password2" type="password" value="">
-                <span class="helptext white-text">Para verificación, introduzca la misma contraseña que introdujo arriba.</span>
+            <div class="card-panel my-button lighten-1 waves-effect waves-orange ">
+                <a class="btn-flat white-text" id="register"><i class="fa fa-paper-plane right"></i>Registrar</a>
             </div>
-        </div>
-        <div class="card-panel my-button lighten-1 waves-effect waves-orange ">
-            <a class="btn-flat white-text" id="register"><i class="fa fa-paper-plane right"></i>Registrar</a>
-        </div>
+        </form>
     </div>
 </div>
 {% endblock %}
@@ -34,7 +74,6 @@
 <script>
     $('input:password[name=password2]').focusout(function(){
         if($('input:password[name=password2]').val()!=""){
-            console.log("no"+$('input:password[name=password2]').val());
             if($('input:password[name=password1]').val()!=$('input:password[name=password2]').val()){
                 if ($('input:password[name=password2]').hasClass('valid')) {
                     $('input:password[name=password2]').removeClass('valid');
@@ -56,7 +95,6 @@
         }
     });
     $('input:text[name=username]').focusout(function(){
-        console.log("no"+$('input:text[name=username]').val());
         if($('input:text[name=username]').val()!=""){
             if(/^[a-zA-Z0-9-_.]*$/.test($('input:text[name=username]').val())!= true){
                 if ($('input:text[name=username]').hasClass('valid')) {
@@ -80,7 +118,6 @@
     });
 
     $('input:text[name=email]').focusout(function(){
-        console.log("no"+$('input:text[name=email]').val());
         if($('input:text[name=email]').val()!=""){
             if($('input:text[name=email]').val().indexOf("@")>=0){
                 if ($('input:text[name=email]').hasClass('invalid')) {
@@ -102,48 +139,11 @@
             }
         }
     });
-
     $('#register').click(function() {
         if($('input:password[name=password1]').hasClass('invalid') || $('input:password[name=password2]').hasClass('invalid') || $('input:text[name=email]').hasClass('invalid') || $('input:password[name=password1]').val()=="" || $('input:password[name=password2]').val()=="" || $('input:text[name=email]').val()==""){
             Materialize.toast('Verifique los campos', 2000)
         }else{
-
-
-            var data={
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                username:$('input:text[name=username]').val(),
-                password:$('input:password[name=password1]').val(),
-                email:$('input:text[name=email]').val(),
-            }
-            var a=[$('input:text[name=username]'),
-                   $('input:password[name=password1]'),
-                   $('input:text[name=email]'),
-                   $('input:password[name=password2]')];
-            for (i = 0; i < 4; i++) {
-                a[i].val("");
-                if (a[i].hasClass('valid')) {
-                    a[i].removeClass('valid');
-                }
-                if (a[i].hasClass('invalid')) {
-                    a[i].removeClass('invalid');
-                }
-            }
-
-
-            $.ajax({
-                type: "POST",
-                url: "{% url 'brodus:new_user' %}",
-                data: data,
-                success: function(result){
-                    Materialize.toast('Registrado con éxito', 2000);
-                },
-                error: function(err){
-                    console.log("ERRRORRRR");
-                    console.log(err.responseText);
-
-
-                },
-            });
+            $( "#create_user" ).submit();
         }
     });
 </script>
