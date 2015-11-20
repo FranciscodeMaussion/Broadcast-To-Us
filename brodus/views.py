@@ -44,6 +44,11 @@ def new_user(request):
         n_u.email=request.POST['email']
         password=request.POST['password1']
         rol=Rol()
+        rol.nombre=username
+        n_u.set_password(password)
+        n_u.save()
+        rol.user=n_u
+        rol.save()
         ids_idioma=request.POST.getlist("idiomas")
         print ids_idioma
         for i in ids_idioma:
@@ -59,11 +64,6 @@ def new_user(request):
         for i in ids_trabajos:
             aux = Jobs.objects.get(id = i)
             rol.trabajo.add(aux)
-        n_u.set_password(password)
-        n_u.save()
-        rol.user=n_u
-        rol.nombre=username
-        rol.save()
         user = authenticate(username=username, password=password)
         login(request, user)
     return render_to_response('a_user.html',{'idiomas':idiomas,'lenguajes':lenguajes,'trabajos':trabajos},
