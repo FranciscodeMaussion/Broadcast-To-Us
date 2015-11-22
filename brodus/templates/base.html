@@ -17,13 +17,32 @@
                     <div class="container">
                         <a href="{% url 'brodus:index' %}" class="brand-logo">BroadUs</a>
                         <ul class="right hide-on-med-and-down">
+                            {% if rol_user.su %}
+                            <li class="arriba"><a class='dropdown-button' href='#' data-beloworigin="true" data-activates='dropdown1'><i class='fa fa-plus'></i></a></li>
+                            {% endif %}
                             {% if user.is_authenticated %}
-                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_out' %}" data-tooltip="Log_out"><i class='fa fa-sign-out'></i></a></li>
-                                {% else %}
-                            <li><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_in' %}" data-tooltip="Log_in"><i class='fa fa-sign-in'></i></a></li>
-                                {% endif %}
+                            <li class="arriba"><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_out' %}" data-tooltip="Log_out"><i class='fa fa-sign-out'></i></a></li>
+                            {% else %}
+                            <li class="arriba"><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_in' %}" data-tooltip="Log_in"><i class='fa fa-sign-in'></i></a></li>
+                            {% endif %}
                         </ul>
                         <ul class="side-nav" style="right: -250px;" id="mobile-demo">
+                            {% if rol_user.su %}
+                            <li class="no-padding">
+                                <ul class="collapsible collapsible-accordion">
+                                    <li>
+                                        <a class="collapsible-header">Agregar...<i class="fa fa-caret-down"></i></a>
+                                        <div class="collapsible-body">
+                                            <ul>
+                                                <li><a class="modal-trigger waves-effect waves-light" href="#idioma_modal">Idioma</a></li>
+                                                <li><a class="modal-trigger waves-effect waves-light" href="#lenguaje_modal">Lenguaje</a></li>
+                                                <li><a class="modal-trigger waves-effect waves-light" href="#job_modal">Trabajo</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            {% endif %}
                             {% if user.is_authenticated %}
                             <li><a href="{% url 'brodus:log_out' %}"><i class='fa fa-sign-out fa-fw left'></i>Log-out</a></li>
                             {% else %}
@@ -34,6 +53,62 @@
                     </div>
                 </div>
             </nav>
+            <ul id='dropdown1' class='dropdown-content my-blue'>
+                <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#idioma_modal">Idioma</a></li>
+                <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#lenguaje_modal">Lenguaje</a></li>
+                <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#job_modal">Trabajo</a></li>
+            </ul>
+            <div id="idioma_modal" class="modal">
+                <form action="{% url 'brodus:add_idioma' %}" method="POST" enctype="multipart/form-data" id="add_idioma">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="input-field">
+                            <input maxlength="30" name="nombre_idioma" id="nombre_idioma" type="text" value="">
+                            <label for="nombre_idioma">Nombre del Idioma</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+            <div id="lenguaje_modal" class="modal">
+                <form action="{% url 'brodus:add_lenguaje' %}" method="POST" enctype="multipart/form-data" id="add_lenguaje">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="input-field">
+                            <input maxlength="30" name="nombre_lenguaje" id="nombre_lenguaje" type="text" value="">
+                            <label for="nombre_lenguaje">Nombre del Lenguaje</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+            <div id="job_modal" class="modal">
+                <form action="{% url 'brodus:add_job' %}" method="POST" enctype="multipart/form-data" id="add_job">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="input-field">
+                                <input maxlength="30" name="nombre_trabajo" id="nombre_trabajo" type="text" value="">
+                                <label for="nombre_trabajo">Nombre del Trabajo</label>
+                            </div>
+                            <div class="input-field">
+                                <textarea id="desc_trabajo" name="desc_trabajo" class="materialize-textarea"></textarea>
+                                <label for="desc_trabajo">Descripción del trabajo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                    </div>
+                </form>
+            </div>
         </header>
         <main>
             {% block content %}
@@ -68,6 +143,7 @@
         $(document).ready(function(){
             $('.tooltipped').tooltip({delay: 50});
             $('select').material_select();
+            $('.modal-trigger').leanModal();
         });
     </script>
     {% block scripts %}

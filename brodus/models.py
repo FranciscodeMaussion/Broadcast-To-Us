@@ -71,6 +71,7 @@ class Rol(models.Model):
     lenguaje = models.ManyToManyField(Lenguaje)
     user = models.OneToOneField(User, related_name="persona", default=None)
     nombre = models.CharField(u'Nombre', max_length=200, default=None, blank=True, null=True)
+    su = models.BooleanField(u'Superuser', default=False)
 
     def __str__(self):
         return self.nombre.encode('utf8')

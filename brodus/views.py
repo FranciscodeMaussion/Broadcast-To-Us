@@ -8,9 +8,11 @@ from django.views.decorators.csrf import requires_csrf_token
 from brodus.models import Jobs, Workers, Proj, Idioma, Lenguaje, Rol
 # Create your views here.
 
+@login_required(login_url='/user/log_in')
 def index(request):
     context = RequestContext(request)
-    return render_to_response('index.html', context)
+    rol_user = Rol.objects.get(user = request.user)
+    return render_to_response('index.html', {'rol_user':rol_user}, context)
 
 @requires_csrf_token
 def log_in(request):
