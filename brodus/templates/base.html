@@ -36,7 +36,7 @@
                                             <ul>
                                                 <li><a class="modal-trigger waves-effect waves-light" href="#idioma_modal">Idioma</a></li>
                                                 <li><a class="modal-trigger waves-effect waves-light" href="#lenguaje_modal">Lenguaje</a></li>
-                                                <li><a class="modal-trigger waves-effect waves-light" href="#job_modal">Trabajo</a></li>
+                                                <li><a class="modal-trigger waves-effect waves-light" href="#trabajo_modal">Trabajo</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -56,7 +56,7 @@
             <ul id='dropdown1' class='dropdown-content my-blue'>
                 <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#idioma_modal">Idioma</a></li>
                 <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#lenguaje_modal">Lenguaje</a></li>
-                <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#job_modal">Trabajo</a></li>
+                <li class="arriba"><a class="modal-trigger waves-effect waves-light white-text" href="#trabajo_modal">Trabajo</a></li>
             </ul>
             <div id="idioma_modal" class="modal">
                 <form action="{% url 'brodus:add_idioma' %}" method="POST" enctype="multipart/form-data" id="add_idioma">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                        <a onclick="send_me('idioma')" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
                         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
                     </div>
                 </form>
@@ -83,13 +83,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                        <a href="#!" onclick="send_me('lenguaje')" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
                         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
                     </div>
                 </form>
             </div>
-            <div id="job_modal" class="modal">
-                <form action="{% url 'brodus:add_job' %}" method="POST" enctype="multipart/form-data" id="add_job">
+            <div id="trabajo_modal" class="modal">
+                <form action="{% url 'brodus:add_trabajo' %}" method="POST" enctype="multipart/form-data" id="add_trabajo">
                     {% csrf_token %}
                     <div class="modal-content">
                         <div class="modal-content">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                        <a href="#!" onclick="send_me('trabajo')" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
                         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
                     </div>
                 </form>
@@ -145,6 +145,28 @@
             $('select').material_select();
             $('.modal-trigger').leanModal();
         });
+        function send_me(f){
+            if($('input:text[name=nombre_'+f+']').val()!=""){
+                /*$( '#add_'+f ).submit();*/
+                var formData = $( '#add_'+f ).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: $( '#add_'+f ).attr('action'),
+                    data: formData,
+                    statusCode: {
+                        202: function(){
+                            Materialize.toast('Se agrego correctamente el nuevo '+f, 2000);
+                            $( '#nombre_'+f ).val('')
+                            if ( f=='trabajo' ){
+                                $( '#desc_'+f ).val('')
+                            }
+                        },
+                    },
+                });
+            }else{
+                Materialize.toast('Verifique los campos', 2000);
+            }
+        }
     </script>
     {% block scripts %}
     {% endblock %}

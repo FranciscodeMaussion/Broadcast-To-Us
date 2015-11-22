@@ -76,3 +76,28 @@ def log_out(request):
     logout(request)
     context = RequestContext(request)
     return redirect('/')
+
+def add_lenguaje(request):
+    context = RequestContext(request)
+    if request.method=='POST':
+        l=Lenguaje()
+        l.nombre=request.POST['nombre_lenguaje']
+        l.save()
+    return HttpResponse(status=202)
+
+def add_idioma(request):
+    context = RequestContext(request)
+    if request.method=='POST':
+        i=Idioma()
+        i.nombre=request.POST['nombre_idioma']
+        i.save()
+    return HttpResponse(status=202)
+
+def add_trabajo(request):
+    context = RequestContext(request)
+    if request.method=='POST':
+        t=Jobs()
+        t.nombre=request.POST['nombre_trabajo']
+        t.desc=request.POST['desc_trabajo']
+        t.save()
+    return HttpResponse(status=202)
