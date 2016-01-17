@@ -6,6 +6,12 @@
 {% block content %}
 <div class="row">
     <div class="card-panel my-card col s12 m6 push-m3 l4 push-l4">
+        <div>
+            <div class="container">
+                <p class="white-text" style="font-size:20px">Ingreso</p>
+            </div>
+            <div class="divider" ></div>
+        </div>
         <div class="container">
             <div class="input-field">
                 <i class="fa fa-user prefix"></i>
@@ -17,12 +23,12 @@
                 <input class="white-text" name="password" id="id_password1" type="password" value="">
                 <label for="id_paassword">Contraseña</label>
             </div>
-            <div class="right-align">
-                <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a><br>
-                <button class="card-panel my-button waves-effect waves-orange btn-large" id="log-in">
-                    <i class="fa fa-paper-plane right"></i>Log In
-                </button>
-            </div>
+            <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a>
+        </div>
+        <div class="right-align">
+            <button class="card-panel my-button waves-effect waves-orange btn-large" id="log-in">
+                <i class="fa fa-paper-plane right"></i>Log In
+            </button>
         </div>
     </div>
 </div>
