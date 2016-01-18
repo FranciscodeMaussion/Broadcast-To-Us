@@ -24,7 +24,7 @@ def new_proy(request):
 
 @requires_csrf_token
 def n_p(request):
-    #TODO crear proyecto y guardar id o mandarla
+    #TODO guardar id o mandarla
     if request.method=='POST':
         name = request.POST['name']
         desc = request.POST['desc']
