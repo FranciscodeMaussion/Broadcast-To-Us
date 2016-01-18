@@ -14,6 +14,41 @@ def index(request):
     rol_user = Rol.objects.get(user = request.user)
     return render_to_response('index.html', {'rol_user':rol_user}, context)
 
+@login_required(login_url='/user/log_in')
+def new_proy(request):
+    context = RequestContext(request)
+    idiomas = Idioma.objects.all()
+    lenguajes = Lenguaje.objects.all()
+    trabajos = Jobs.objects.all()
+    return render_to_response('n_proj.html',{'idiomas':idiomas,'lenguajes':lenguajes,'trabajos':trabajos}, context)
+
+@requires_csrf_token
+def n_p(request):
+    #TODO crear proyecto y guardar id o mandarla
+    if request.method=='POST':
+        name = request.POST['name']
+        desc = request.POST['desc']
+        proy = Proj()
+        proy.nombre = name
+        proy.desc = desc
+        proy.owner = request.user
+        proy.save()
+        return HttpResponse(status=202)
+    return HttpResponse(status=203)
+
+@requires_csrf_token
+def n_p_w(request):
+    context = RequestContext(request)
+    id_t=request.POST['trab']
+    cant_t=request.POST['cant']
+    print cant_t
+    work = Workers()
+    work.tipo = Jobs.objects.get(id = id_t)
+    work.cantidad = cant_t
+    work.save()
+    works = Workers.objects.all()
+    return render_to_response('n_work.html',{'works':works}, context)
+
 @requires_csrf_token
 def log_in(request):
     context = RequestContext(request)

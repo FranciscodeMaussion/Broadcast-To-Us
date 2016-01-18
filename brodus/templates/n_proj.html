@@ -4,9 +4,126 @@
 <title>Nuevo proyecto</title>
 {% endblock %}
 {% block content %}
-
+<div class="container">
+    <div class="card-panel my-card">
+        <div id="hidden-0">
+            <div class="row">
+                <div class="input-field col s6 m4">
+                    <!--<i class="fa fa-user prefix"></i>-->
+                    <input class="white-text" maxlength="30" name="name" id="id_name" type="text" value="">
+                    <label for="id_name">Nombre del proyecto</label>
+                </div>
+                <div class="input-field col s12">
+                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea white-text"></textarea>
+                    <label for="id_desc">Descripción del proyecto</label>
+                </div>
+                <div class="input-field col s3 offset-s9 btn-large my-button" id="send_new_proj">crear proyecto</div>
+            </div>
+        </div>
+        <div id="hidden-1" hidden>
+            <div class="row">
+                <div class="input-field col s12 m6 l6">
+                    <select multiple class="white-text" name="idiomas" id="idiomas">
+                        <option value="" disabled selected>Elije</option>
+                        {% for idioma in idiomas %}
+                        <option value="{{idioma.id}}">{{idioma}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Idioma</label>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <select multiple class="white-text" name="lenguajes" id="lenguajes">
+                        <option value="" disabled selected>Elije</option>
+                        {% for lenguaje in lenguajes %}
+                        <option value="{{lenguaje.id}}">{{lenguaje}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Lenguaje</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s5">
+                    <select class="white-text" name="trabajos" id="#new_work_trabajo_add">
+                        <option value="" disabled selected>Elije</option>
+                        {% for trabajo in trabajos %}
+                        <option value="{{trabajo.id}}">{{trabajo}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Trabajo</label>
+                </div>
+                <div class="input-field col s6">
+                    <input value="1" class="white-text" name="cant" id="id_cant" min="1" type="number">
+                    <label for="id_cant">Cantidad necesaria</label>
+                </div>
+                <div class="input-field col s1 btn-large my-button" id="send_new_work">
+                    <i class='fa fa-plus'></i>
+                </div>
+                <table class="highlight col s12 white-text">
+                    <thead>
+                        <tr>
+                            <th data-field="id_work">Trabajo Nº</th>
+                            <th data-field="type_work">Tipo de Trabajo</th>
+                            <th data-field="cant_work">Cantiad de Trabajadores</th>
+                        </tr>
+                    </thead>
+                    <tbody id="add_jobs">
+                        {% include "n_work.html" %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script>
+    $('#send_new_proj').click(function(){
+        if($('input[name=desc_proy]').val() != "" && $('input[name=name]').val() != ""){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                name:$('input[name=name]').val(),
+                desc:$('textarea[name=desc_proy]').val(),
+            };
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'brodus:create_proj' %}",
+                data: data,
+                statusCode: {
+                    202:function(result){
+                        Materialize.toast('Ahora puede modificar', 3000);
+
+                        /*TODO mostrar hidden resolver hidden o no hidden #hidden-0*/
+                    },
+                },
+            });
+        }else{
+            Materialize.toast('Verifique los campos', 2000);
+        }
+    });
+    $('#send_new_work').click(function(){
+        if($('input[name=cant]').val() != "" && parseInt($('input[name=cant]').val()) > 0){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                trab:parseInt($('select[name=trabajos]').val()),
+                cant:parseInt($('input[name=cant]').val()),
+            };
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'brodus:add_work' %}",
+                data: data,
+                success: function(result){
+                    $("#add_jobs").html(result);
+                    Materialize.toast('Trabajo añadido', 2000);
+                },
+                error: function(err){
+                    console.log("ERRRORRRR");
+                    console.log(err.responseText);
+                    console.log(data);
+                },
+            });
+        }else{
+            Materialize.toast('Verifique los campos', 2000);
+        }
+    });
 </script>
 {% endblock %}

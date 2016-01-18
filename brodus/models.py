@@ -44,7 +44,7 @@ class Workers(models.Model):
     cantidad = models.IntegerField(u'Cantidad', default=0)
 
     def __str__(self):
-        return tipo.nombre.encode('utf8')
+        return str(self.id)
 
 class Proj(models.Model):
     class Meta:
@@ -53,9 +53,9 @@ class Proj(models.Model):
 
     nombre = models.CharField(u'Nombre', max_length=200)
     desc = models.CharField(u'Descripción', max_length=400)
-    nescesita_w = models.ForeignKey(Workers, default=None, blank=True, null=True)
-    nescesita_i = models.ForeignKey(Jobs, default=None, blank=True, null=True)
-    nescesita_l = models.ForeignKey(Lenguaje, default=None, blank=True, null=True)
+    nescesita_w = models.ManyToManyField(Workers)
+    nescesita_i = models.ManyToManyField(Idioma)
+    nescesita_l = models.ManyToManyField(Lenguaje)
     owner = models.ForeignKey(User, default=None)
 
     def __str__(self):
