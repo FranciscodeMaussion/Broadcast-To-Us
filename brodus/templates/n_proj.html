@@ -24,7 +24,7 @@
 {% block scripts %}
 <script>
     $('#send_new_proj').click(function(){
-        if($('input[name=desc_proy]').val() != "" && $('input[name=name]').val() != ""){
+        if($('textarea[name=desc_proy]').val() != "" && $('input[name=name]').val() != ""){
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 name:$('input[name=name]').val(),
@@ -34,12 +34,20 @@
                 type: 'POST',
                 url: "{% url 'brodus:create_proj' %}",
                 data: data,
-                statusCode: {
+                /*TODO mostrar hidden resolver hidden o no hidden #hidden-0*/
+                /*statusCode: {
                     202:function(result){
                         Materialize.toast('Ahora puede modificar', 3000);
 
-                        /*TODO mostrar hidden resolver hidden o no hidden #hidden-0*/
+
                     },
+                },*/
+                success: function(result){
+
+                },
+                error: function(err){
+                    console.log(err.responseText);
+                    console.log(data);
                 },
             });
         }else{

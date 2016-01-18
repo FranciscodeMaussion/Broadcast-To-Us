@@ -10,11 +10,11 @@
             <div class="row">
                 <div class="input-field col s6 m4">
                     <!--<i class="fa fa-user prefix"></i>-->
-                    <input class="white-text" maxlength="30" name="name" id="id_name" type="text" value="">
+                    <input class="white-text" maxlength="30" name="name" id="id_name" type="text" value="{{proj.nombre}}">
                     <label for="id_name">Nombre del proyecto</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea white-text"></textarea>
+                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea white-text">{{proj.desc}}</textarea>
                     <label for="id_desc">Descripción del proyecto</label>
                 </div>
                 <div class="input-field col s12 m6 l6">
@@ -53,7 +53,7 @@
                 <div class="input-field col s1 btn-large my-button" id="send_new_work">
                     <i class='fa fa-plus'></i>
                 </div>
-                <table class="highlight col s12 white-text">
+                <table class="highlight col s12 white-text" style="border-bottom-color: #FFF;border-bottom-style: solid;border-bottom-width: 1px;">
                     <thead>
                         <tr>
                             <th data-field="id_work">Trabajo Nº</th>
@@ -65,6 +65,7 @@
                         {% include "n_work.html" %}
                     </tbody>
                 </table>
+                <div class="input-field col s3 offset-s9 btn-large my-button" id="send_proj">guardar proyecto</div>
             </div>
         </div>
     </div>
@@ -89,6 +90,28 @@
                 },
                 error: function(err){
                     console.log("ERRRORRRR");
+                    console.log(err.responseText);
+                    console.log(data);
+                },
+            });
+        }else{
+            Materialize.toast('Verifique los campos', 2000);
+        }
+    });
+    $('#send_proj').click(function(){
+        if($('textarea[name=desc_proy]').val() != "" && $('input[name=name]').val() != ""){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                /*TODO tomar datos y mandarlos*/
+            };
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'brodus:g_proj' %}",
+                data: data,
+                success: function(result){
+
+                },
+                error: function(err){
                     console.log(err.responseText);
                     console.log(data);
                 },

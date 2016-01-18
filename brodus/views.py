@@ -12,17 +12,39 @@ from brodus.models import Jobs, Workers, Proj, Idioma, Lenguaje, Rol
 def index(request):
     context = RequestContext(request)
     rol_user = Rol.objects.get(user = request.user)
-    return render_to_response('index.html', {'rol_user':rol_user}, context)
+    return render_to_response('index.html',
+                              {'rol_user':rol_user},
+                              context)
 
 @login_required(login_url='/user/log_in')
 def new_proy(request):
     context = RequestContext(request)
+    return render_to_response('n_proj.html',
+                              context)
+
+@login_required(login_url='/user/log_in')
+def mod_proy(request, proj):
+    context = RequestContext(request)
+    proj = Proj.objects.get(id = proj)
     idiomas = Idioma.objects.all()
     lenguajes = Lenguaje.objects.all()
     trabajos = Jobs.objects.all()
-    return render_to_response('n_proj.html',{'idiomas':idiomas,'lenguajes':lenguajes,'trabajos':trabajos}, context)
+    return render_to_response('m_proj.html',
+                              {'idiomas':idiomas,
+                               'lenguajes':lenguajes,
+                               'trabajos':trabajos,
+                               'proj':proj,
+                               'works':proj.nescesita_w},
+                              context)
 
-@requires_csrf_token
+@login_required(login_url='/user/log_in')
+def g_p(request):
+    #TODO guardar proyecto
+    if request.method=='POST':
+        pass
+    pass
+
+@login_required(login_url='/user/log_in')
 def n_p(request):
     #TODO guardar id o mandarla
     if request.method=='POST':
@@ -33,10 +55,12 @@ def n_p(request):
         proy.desc = desc
         proy.owner = request.user
         proy.save()
-        return HttpResponse(status=202)
+        path = "/mod/proyecto/"+str(proy.id)
+        print path
+        return redirect(path) #No redirecciona
     return HttpResponse(status=203)
 
-@requires_csrf_token
+@login_required(login_url='/user/log_in')
 def n_p_w(request):
     context = RequestContext(request)
     id_t=request.POST['trab']
@@ -47,7 +71,9 @@ def n_p_w(request):
     work.cantidad = cant_t
     work.save()
     works = Workers.objects.all()
-    return render_to_response('n_work.html',{'works':works}, context)
+    return render_to_response('n_work.html',
+                              {'works':works},
+                              context)
 
 @requires_csrf_token
 def log_in(request):
@@ -65,7 +91,8 @@ def log_in(request):
         else:
              return HttpResponse(status=203)
     else:
-         return render_to_response('log_in_user.html', context)
+         return render_to_response('log_in_user.html',
+                                   context)
 
 @requires_csrf_token
 def new_user(request):
@@ -103,7 +130,10 @@ def new_user(request):
             rol.trabajo.add(aux)
         user = authenticate(username=username, password=password)
         login(request, user)
-    return render_to_response('a_user.html',{'idiomas':idiomas,'lenguajes':lenguajes,'trabajos':trabajos},
+    return render_to_response('a_user.html',
+                              {'idiomas':idiomas,
+                               'lenguajes':lenguajes,
+                               'trabajos':trabajos},
                               context)
 
 @login_required(login_url='/user/log_in')
@@ -112,6 +142,7 @@ def log_out(request):
     context = RequestContext(request)
     return redirect('/')
 
+@login_required(login_url='/user/log_in')
 def add_lenguaje(request):
     context = RequestContext(request)
     if request.method=='POST':
@@ -120,6 +151,7 @@ def add_lenguaje(request):
         l.save()
     return HttpResponse(status=202)
 
+@login_required(login_url='/user/log_in')
 def add_idioma(request):
     context = RequestContext(request)
     if request.method=='POST':
@@ -128,6 +160,7 @@ def add_idioma(request):
         i.save()
     return HttpResponse(status=202)
 
+@login_required(login_url='/user/log_in')
 def add_trabajo(request):
     context = RequestContext(request)
     if request.method=='POST':

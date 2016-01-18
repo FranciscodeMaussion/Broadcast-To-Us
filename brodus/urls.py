@@ -8,6 +8,8 @@ urlpatterns = patterns('',
                        url(r'^add/trabajo$','brodus.views.add_trabajo', name='add_trabajo'),
                        url(r'^add/lenguaje$','brodus.views.add_lenguaje', name='add_lenguaje'),
                        url(r'^new/proyecto$','brodus.views.new_proy', name='new_proy'),
+                       url(r'^mod/proyecto/(?P<proj>[0-9]+)$','brodus.views.mod_proy', name='mod_proy'),
                        url(r'^add/work$','brodus.views.n_p_w', name='add_work'),
                        url(r'^create/proj$','brodus.views.n_p', name='create_proj'),
+                       url(r'^guardar/proj$','brodus.views.g_p', name='g_proj'),
                       )
