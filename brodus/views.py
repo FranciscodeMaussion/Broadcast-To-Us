@@ -26,23 +26,31 @@ def new_proy(request):
 def mod_proy(request, proj):
     context = RequestContext(request)
     proj = Proj.objects.get(id = proj)
-    idiomas = Idioma.objects.all()
-    lenguajes = Lenguaje.objects.all()
-    trabajos = Jobs.objects.all()
-    return render_to_response('m_proj.html',
-                              {'idiomas':idiomas,
-                               'lenguajes':lenguajes,
-                               'trabajos':trabajos,
-                               'proj':proj,
-                               'works':proj.nescesita_w},
-                              context)
-
-@login_required(login_url='/user/log_in')
-def g_p(request):
-    #TODO guardar proyecto
     if request.method=='POST':
-        pass
-    pass
+        print request.POST
+        proj.nombre = request.POST['name']
+        proj.desc = request.POST['desc_proy']
+        proj.save()
+        p_i = request.POST.getlist("idiomas")
+        for i in p_i:
+            aux = Idioma.objects.get(id = i)
+            proj.nescesita_i.add(aux)
+        p_l = request.POST.getlist("lenguajes")
+        for i in p_l:
+            aux = Lenguaje.objects.get(id = i)
+            proj.nescesita_l.add(aux)
+        return redirect('/')
+    else:
+        idiomas = Idioma.objects.all()
+        lenguajes = Lenguaje.objects.all()
+        trabajos = Jobs.objects.all()
+        return render_to_response('m_proj.html',
+                                  {'idiomas':idiomas,
+                                   'lenguajes':lenguajes,
+                                   'trabajos':trabajos,
+                                   'proj':proj,
+                                   'works':proj.nescesita_w},
+                                  context)
 
 @login_required(login_url='/user/log_in')
 def n_p(request):
@@ -55,13 +63,13 @@ def n_p(request):
         proy.desc = desc
         proy.owner = request.user
         proy.save()
-        path = "/mod/proyecto/"+str(proy.id)
+        path = "/mod/proyecto/"+str(proy.id)#ID aca!!!!
         print path
         return redirect(path) #No redirecciona
     return HttpResponse(status=203)
 
 @login_required(login_url='/user/log_in')
-def n_p_w(request):
+def n_p_w(request, w_p):
     context = RequestContext(request)
     id_t=request.POST['trab']
     cant_t=request.POST['cant']
@@ -70,7 +78,9 @@ def n_p_w(request):
     work.tipo = Jobs.objects.get(id = id_t)
     work.cantidad = cant_t
     work.save()
-    works = Workers.objects.all()
+    proj = Proj.objects.get(id = w_p)
+    proj.nescesita_w.add(work)
+    works = proj.nescesita_w
     return render_to_response('n_work.html',
                               {'works':works},
                               context)

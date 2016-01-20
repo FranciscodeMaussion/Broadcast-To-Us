@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load tags %}
 {% block titulo %}
 <title>Modificar proyecto</title>
 {% endblock %}
 {% block content %}
 <div class="container">
     <div class="card-panel my-card">
-        <div>
+        <form action="{% url 'brodus:mod_proy' proj.id %}" method="POST" enctype="multipart/form-data" id="mod_proj">
+            {% csrf_token %}
             <div class="row">
                 <div class="input-field col s6 m4">
                     <!--<i class="fa fa-user prefix"></i>-->
@@ -21,7 +22,14 @@
                     <select multiple class="white-text" name="idiomas" id="idiomas">
                         <option value="" disabled selected>Elije</option>
                         {% for idioma in idiomas %}
+                        {% for check in proj.nescesita_i.all %}
+                        {% if check == idioma %}
+                        <option value="{{idioma.id}}" >{{idioma}}</option><!--materilize preselected-->
+                        {{ forloop|break }}
+                        {% elif forloop.last %}
                         <option value="{{idioma.id}}">{{idioma}}</option>
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </select>
                     <label>Idioma</label>
@@ -30,7 +38,14 @@
                     <select multiple class="white-text" name="lenguajes" id="lenguajes">
                         <option value="" disabled selected>Elije</option>
                         {% for lenguaje in lenguajes %}
+                        {% for check in proj.nescesita_l.all %}
+                        {% if check == lenguaje %}
+                        <option value="{{lenguaje.id}}" >{{lenguaje}}</option><!--materilize preselected-->
+                        {{ forloop|break }}
+                        {% elif forloop.last %}
                         <option value="{{lenguaje.id}}">{{lenguaje}}</option>
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </select>
                     <label>Lenguaje</label>
@@ -67,7 +82,7 @@
                 </table>
                 <div class="input-field col s3 offset-s9 btn-large my-button" id="send_proj">guardar proyecto</div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 {% endblock %}
@@ -82,7 +97,7 @@
             };
             $.ajax({
                 type: 'POST',
-                url: "{% url 'brodus:add_work' %}",
+                url: "{% url 'brodus:add_work' proj.id %}",
                 data: data,
                 success: function(result){
                     $("#add_jobs").html(result);
@@ -100,22 +115,7 @@
     });
     $('#send_proj').click(function(){
         if($('textarea[name=desc_proy]').val() != "" && $('input[name=name]').val() != ""){
-            var data={
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                /*TODO tomar datos y mandarlos*/
-            };
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'brodus:g_proj' %}",
-                data: data,
-                success: function(result){
-
-                },
-                error: function(err){
-                    console.log(err.responseText);
-                    console.log(data);
-                },
-            });
+            $( "#mod_proj" ).submit();
         }else{
             Materialize.toast('Verifique los campos', 2000);
         }
