@@ -20,11 +20,11 @@
                 </div>
                 <div class="input-field col s12 m6 l6">
                     <select multiple class="white-text" name="idiomas" id="idiomas">
-                        <option value="" disabled selected>Elije</option>
+                        <option value="" disabled>Elije</option>
                         {% for idioma in idiomas %}
                         {% for check in proj.nescesita_i.all %}
                         {% if check == idioma %}
-                        <option value="{{idioma.id}}" >{{idioma}}</option><!--materilize preselected-->
+                        <option value="{{idioma.id}}" selected>{{idioma}}</option>
                         {{ forloop|break }}
                         {% elif forloop.last %}
                         <option value="{{idioma.id}}">{{idioma}}</option>
@@ -36,11 +36,11 @@
                 </div>
                 <div class="input-field col s12 m6 l6">
                     <select multiple class="white-text" name="lenguajes" id="lenguajes">
-                        <option value="" disabled selected>Elije</option>
+                        <option value="" disabled>Elije</option>
                         {% for lenguaje in lenguajes %}
                         {% for check in proj.nescesita_l.all %}
                         {% if check == lenguaje %}
-                        <option value="{{lenguaje.id}}" >{{lenguaje}}</option><!--materilize preselected-->
+                        <option value="{{lenguaje.id}}" selected>{{lenguaje}}</option>
                         {{ forloop|break }}
                         {% elif forloop.last %}
                         <option value="{{lenguaje.id}}">{{lenguaje}}</option>
@@ -68,7 +68,7 @@
                 <div class="input-field col s1 btn-large my-button" id="send_new_work">
                     <i class='fa fa-plus'></i>
                 </div>
-                <table class="highlight col s12 white-text" style="border-bottom-color: #FFF;border-bottom-style: solid;border-bottom-width: 1px;">
+                <table class="highlight col s12 white-text" style="margin-top:20px;">
                     <thead>
                         <tr>
                             <th data-field="id_work">Trabajo Nº</th>
