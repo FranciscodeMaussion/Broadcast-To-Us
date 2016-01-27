@@ -2894,16 +2894,11 @@ $(document).ready(function(){
       } else {
         label = selectOptions.first();
       }
-    for (var i = 0 ; i < label.length; i++) {
-        toggleEntryFromArray(valuesSelected, label[i].index, $select);
-    }
       // Function that renders and appends the option taking into
       // account type and possible image icon.
       var appendOptionWithIcon = function(select, option, type) {
         // Add disabled attr if disabled
         var disabledClass = (option.is(':disabled')) ? 'disabled ' : '';
-          var checkClass = (option.is(':selected')) ? 'checked ' : '';
-          var activeClass = (option.is(':selected')) ? 'active ' : '';
 
         // add icons
         var icon_url = option.data('icon');
@@ -2923,7 +2918,7 @@ $(document).ready(function(){
 
         // Check for multiple type.
         if (type === 'multiple') {
-          options.append($('<li class="' + activeClass + disabledClass + '"><span><input type="checkbox"' + checkClass + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
+          options.append($('<li class="'+ disabledClass + '"><span><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
         } else {
           options.append($('<li class="' + disabledClass + '"><span>' + option.html() + '</span></li>'));
         }
@@ -2988,16 +2983,7 @@ $(document).ready(function(){
         dropdownIcon.addClass('disabled');
 
       // escape double quotes
-      //var sanitizedLabelHtml = label.html() && label.html().replace(/"/g, '&quot;');
-        var sanitizedLabelHtml = ""
-        for (var i = 0 ; i < label.length; i++) {
-            if (i == label.length-1){
-                sanitizedLabelHtml += label[i].text
-            }else{
-                sanitizedLabelHtml += label[i].text + ", "
-            }
-            console.log(label[i].text);
-        }
+      var sanitizedLabelHtml = label.html() && label.html().replace(/"/g, '&quot;');
 
       var $newSelect = $('<input type="text" class="select-dropdown" readonly="true" ' + (($select.is(':disabled')) ? 'disabled' : '') + ' data-activates="select-options-' + uniqueID +'" value="'+ sanitizedLabelHtml +'"/>');
       $select.before($newSelect);
@@ -3059,6 +3045,12 @@ $(document).ready(function(){
         collection.find('li.selected').removeClass('selected');
         $(newOption).addClass('selected');
       };
+
+        for (var i = 0 ; i < label.length; i++) {
+            var sel = $select.siblings('ul.dropdown-content').find('li').eq(label[i].index);
+            console.log(sel);
+            $(sel).trigger('click');
+        }
 
       // Allow user to search by typing
       // this array is cleared after 1 second
