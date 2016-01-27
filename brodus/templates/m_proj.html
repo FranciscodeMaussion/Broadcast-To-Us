@@ -20,7 +20,7 @@
                 </div>
                 <div class="input-field col s12 m6 l6">
                     <select multiple class="white-text" name="idiomas" id="idiomas">
-                        <option value="" disabled>Elije</option>
+                        <option value="" disabled selected>Elije</option>
                         {% for idioma in idiomas %}
                         {% for check in proj.nescesita_i.all %}
                         {% if check == idioma %}
@@ -36,7 +36,7 @@
                 </div>
                 <div class="input-field col s12 m6 l6">
                     <select multiple class="white-text" name="lenguajes" id="lenguajes">
-                        <option value="" disabled>Elije</option>
+                        <option value="" disabled selected>Elije</option>
                         {% for lenguaje in lenguajes %}
                         {% for check in proj.nescesita_l.all %}
                         {% if check == lenguaje %}
