@@ -77,9 +77,17 @@ def n_p_w(request, w_p):
     work = Workers()
     work.tipo = Jobs.objects.get(id = id_t)
     work.cantidad = cant_t
-    work.save()
     proj = Proj.objects.get(id = w_p)
-    proj.nescesita_w.add(work)
+    a = False
+    for i in proj.nescesita_w.all():
+        if i.tipo == work.tipo:
+            i.cantidad = int(work.cantidad) + int(i.cantidad)
+            i.save()
+            a = True
+            break
+    if a == False:
+        work.save()
+        proj.nescesita_w.add(work)
     works = proj.nescesita_w
     return render_to_response('n_work.html',
                               {'works':works},
