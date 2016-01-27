@@ -29,6 +29,8 @@
                         {% elif forloop.last %}
                         <option value="{{idioma.id}}">{{idioma}}</option>
                         {% endif %}
+                        {% empty %}
+                        <option value="{{idioma.id}}">{{idioma}}</option>
                         {% endfor %}
                         {% endfor %}
                     </select>
@@ -45,6 +47,8 @@
                         {% elif forloop.last %}
                         <option value="{{lenguaje.id}}">{{lenguaje}}</option>
                         {% endif %}
+                        {% empty %}
+                        <option value="{{lenguaje.id}}">{{lenguaje}}</option>
                         {% endfor %}
                         {% endfor %}
                     </select>
