@@ -32,10 +32,12 @@ def mod_proy(request, proj):
         proj.desc = request.POST['desc_proy']
         proj.save()
         p_i = request.POST.getlist("idiomas")
+        proj.nescesita_i.clear()
         for i in p_i:
             aux = Idioma.objects.get(id = i)
             proj.nescesita_i.add(aux)
         p_l = request.POST.getlist("lenguajes")
+        proj.nescesita_l.clear()
         for i in p_l:
             aux = Lenguaje.objects.get(id = i)
             proj.nescesita_l.add(aux)
