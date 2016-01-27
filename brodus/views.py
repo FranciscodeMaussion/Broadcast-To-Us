@@ -6,9 +6,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import requires_csrf_token
 from brodus.models import Jobs, Workers, Proj, Idioma, Lenguaje, Rol
+from django.conf import settings
 # Create your views here.
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def index(request):
     context = RequestContext(request)
     rol_user = Rol.objects.get(user = request.user)
@@ -16,13 +17,13 @@ def index(request):
                               {'rol_user':rol_user},
                               context)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def new_proy(request):
     context = RequestContext(request)
     return render_to_response('n_proj.html',
                               context)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def mod_proy(request, proj):
     context = RequestContext(request)
     proj = Proj.objects.get(id = proj)
@@ -54,23 +55,21 @@ def mod_proy(request, proj):
                                    'works':proj.nescesita_w},
                                   context)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def n_p(request):
-    #TODO guardar id o mandarla
     if request.method=='POST':
         name = request.POST['name']
-        desc = request.POST['desc']
+        desc = request.POST['desc_proy']
         proy = Proj()
         proy.nombre = name
         proy.desc = desc
         proy.owner = request.user
         proy.save()
         path = "/mod/proyecto/"+str(proy.id)#ID aca!!!!
-        print path
-        return redirect(path) #No redirecciona
+        return redirect(path)
     return HttpResponse(status=203)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def n_p_w(request, w_p):
     context = RequestContext(request)
     id_t=request.POST['trab']
@@ -98,20 +97,25 @@ def n_p_w(request, w_p):
 @requires_csrf_token
 def log_in(request):
     context = RequestContext(request)
+    n = "/"
+    if request.GET:
+        n = request.GET['next']
     if request.method=='POST':
         username=request.POST['username']
         password=request.POST['password']
+        n = request.POST['next']
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return HttpResponse(status=202)
+                return redirect(n)
             else:
                 return HttpResponse(status=203)
         else:
              return HttpResponse(status=203)
     else:
          return render_to_response('log_in_user.html',
+                                    {'next':n},
                                    context)
 
 @requires_csrf_token
@@ -156,13 +160,13 @@ def new_user(request):
                                'trabajos':trabajos},
                               context)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def log_out(request):
     logout(request)
     context = RequestContext(request)
     return redirect('/')
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def add_lenguaje(request):
     context = RequestContext(request)
     if request.method=='POST':
@@ -171,7 +175,7 @@ def add_lenguaje(request):
         l.save()
     return HttpResponse(status=202)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def add_idioma(request):
     context = RequestContext(request)
     if request.method=='POST':
@@ -180,7 +184,7 @@ def add_idioma(request):
         i.save()
     return HttpResponse(status=202)
 
-@login_required(login_url='/user/log_in')
+@login_required()
 def add_trabajo(request):
     context = RequestContext(request)
     if request.method=='POST':

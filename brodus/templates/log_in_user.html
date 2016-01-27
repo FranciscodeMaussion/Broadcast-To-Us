@@ -12,50 +12,59 @@
             </div>
             <div class="divider" ></div>
         </div>
-        <div class="container">
-            <div class="input-field">
-                <i class="fa fa-user prefix"></i>
-                <input class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
-                <label for="id_username">Nombre de usuario</label>
+        <form action="{% url 'brodus:log_in' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+                <div class="input-field">
+                    <i class="fa fa-user prefix"></i>
+                    <input class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
+                    <label for="id_username">Nombre de usuario</label>
+                </div>
+                <div class="input-field">
+                    <i class="fa fa-lock prefix"></i>
+                    <input class="white-text" name="password" id="id_password1" type="password" value="">
+                    <label for="id_paassword">Contraseña</label>
+                </div>
+                <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a>
             </div>
-            <div class="input-field">
-                <i class="fa fa-lock prefix"></i>
-                <input class="white-text" name="password" id="id_password1" type="password" value="">
-                <label for="id_paassword">Contraseña</label>
+            <input type="text" name="next" value="{{ next }}" hidden/>
+            <div class="right-align">
+                <button type="submit" class="card-panel my-button waves-effect waves-orange btn-large" id="log-in">
+                    <i class="fa fa-paper-plane right"></i>Log In
+                </button>
             </div>
-            <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a>
-        </div>
-        <div class="right-align">
-            <button class="card-panel my-button waves-effect waves-orange btn-large" id="log-in">
-                <i class="fa fa-paper-plane right"></i>Log In
-            </button>
-        </div>
+        </form>
     </div>
 </div>
 {% endblock %}
 {% block scripts %}
 <script>
-    $('#log-in').click(function() {
+    /*$('#log-in').click(function() {
         var data={
             csrfmiddlewaretoken: '{{ csrf_token }}',
             username:$('input:text[name=username]').val(),
             password:$('input:password[name=password]').val(),
+            n:$('input:text[name=next]').val(),
         }
 
         $.ajax({
             type: "POST",
             url: "{% url 'brodus:log_in' %}",
             data: data,
+            success: function(result){
+                Materialize.toast('Logged', 3000);
+            },
+            error: function(err){
+                console.log("ERRRORRRR");
+                console.log(err.responseText);
+                console.log(data);
+            },
             statusCode: {
                 203: function(){
                     Materialize.toast('Usuario o contraseña incorrectos', 3000);
                 },
-                202:function(result){
-                    Materialize.toast('Logged', 3000);
-                    window.location.href="{{request.path}}";
-                },
             },
         });
-    });
+    });*/
 </script>
 {% endblock %}
