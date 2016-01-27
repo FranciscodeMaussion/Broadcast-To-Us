@@ -5,31 +5,25 @@
 {% endblock %}
 {% block content %}
 <div class="row">
-    <div class="card-panel my-card col s12 m6 push-m3 l4 push-l4">
-        <div>
-            <div class="container">
-                <p class="white-text" style="font-size:20px">Ingreso</p>
-            </div>
-            <div class="divider" ></div>
-        </div>
+    <div class="card-panel col s12 m6 push-m3 l4 push-l4">
         <form action="{% url 'brodus:log_in' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="container">
                 <div class="input-field">
                     <i class="fa fa-user prefix"></i>
-                    <input class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
+                    <input class="" maxlength="30" name="username" id="id_username" type="text" value="">
                     <label for="id_username">Nombre de usuario</label>
                 </div>
                 <div class="input-field">
                     <i class="fa fa-lock prefix"></i>
-                    <input class="white-text" name="password" id="id_password1" type="password" value="">
+                    <input class="" name="password" id="id_password1" type="password" value="">
                     <label for="id_paassword">Contraseña</label>
                 </div>
-                <a href="{% url 'brodus:new_user' %}" style="color:white">¿No tenés usuario? Tocá para crear uno.</a>
+                <a href="{% url 'brodus:new_user' %}">¿No tenés usuario? Tocá para crear uno.</a>
             </div>
             <input type="text" name="next" value="{{ next }}" hidden/>
             <div class="right-align">
-                <button type="submit" class="card-panel my-button waves-effect waves-orange btn-large" id="log-in">
+                <button type="submit" class="card-panel waves-effect btn-large" id="log-in">
                     <i class="fa fa-paper-plane right"></i>Log In
                 </button>
             </div>

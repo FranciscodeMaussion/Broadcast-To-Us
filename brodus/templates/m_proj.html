@@ -5,21 +5,21 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <div class="card-panel my-card">
+    <div class="card-panel">
         <form action="{% url 'brodus:mod_proy' proj.id %}" method="POST" enctype="multipart/form-data" id="mod_proj">
             {% csrf_token %}
             <div class="row">
                 <div class="input-field col s6 m4">
                     <!--<i class="fa fa-user prefix"></i>-->
-                    <input class="white-text" maxlength="30" name="name" id="id_name" type="text" value="{{proj.nombre}}">
+                    <input class="" maxlength="30" name="name" id="id_name" type="text" value="{{proj.nombre}}">
                     <label for="id_name">Nombre del proyecto</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea white-text">{{proj.desc}}</textarea>
+                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea ">{{proj.desc}}</textarea>
                     <label for="id_desc">Descripción del proyecto</label>
                 </div>
                 <div class="input-field col s12 m6 l6">
-                    <select multiple class="white-text" name="idiomas" id="idiomas">
+                    <select multiple class="" name="idiomas" id="idiomas">
                         <option value="" disabled selected>Elije</option>
                         {% for idioma in idiomas %}
                         {% for check in proj.nescesita_i.all %}
@@ -37,7 +37,7 @@
                     <label>Idioma</label>
                 </div>
                 <div class="input-field col s12 m6 l6">
-                    <select multiple class="white-text" name="lenguajes" id="lenguajes">
+                    <select multiple class="" name="lenguajes" id="lenguajes">
                         <option value="" disabled selected>Elije</option>
                         {% for lenguaje in lenguajes %}
                         {% for check in proj.nescesita_l.all %}
@@ -57,7 +57,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s5">
-                    <select class="white-text" name="trabajos" id="#new_work_trabajo_add">
+                    <select class="" name="trabajos" id="#new_work_trabajo_add">
                         <option value="" disabled selected>Elije</option>
                         {% for trabajo in trabajos %}
                         <option value="{{trabajo.id}}">{{trabajo}}</option>
@@ -66,13 +66,13 @@
                     <label>Trabajo</label>
                 </div>
                 <div class="input-field col s6">
-                    <input value="1" class="white-text" name="cant" id="id_cant" min="1" type="number">
+                    <input value="1" class="" name="cant" id="id_cant" min="1" type="number">
                     <label for="id_cant">Cantidad necesaria</label>
                 </div>
-                <div class="input-field col s1 btn-large my-button" id="send_new_work">
+                <div class="input-field col s1 btn-large " id="send_new_work">
                     <i class='fa fa-plus'></i>
                 </div>
-                <table class="highlight col s12 white-text" style="margin-top:20px;">
+                <table class="highlight col s12 " style="margin-top:20px;">
                     <thead>
                         <tr>
                             <th data-field="id_work">Trabajo Nº</th>
@@ -84,7 +84,7 @@
                         {% include "n_work.html" %}
                     </tbody>
                 </table>
-                <div class="input-field col s3 offset-s9 btn-large my-button" id="send_proj">guardar proyecto</div>
+                <div class="input-field col s3 offset-s9 btn-large " id="send_proj">guardar proyecto</div>
             </div>
         </form>
     </div>

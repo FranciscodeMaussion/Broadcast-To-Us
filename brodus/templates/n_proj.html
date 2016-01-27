@@ -5,20 +5,20 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <div class="card-panel my-card">
+    <div class="card-panel">
         <form action="{% url 'brodus:create_proj' %}" method="POST" enctype="multipart/form-data" id="create_proj">
             {% csrf_token %}
             <div class="row">
                 <div class="input-field col s6 m4">
                     <!--<i class="fa fa-user prefix"></i>-->
-                    <input class="white-text" maxlength="30" name="name" id="id_name" type="text" value="">
+                    <input class="" maxlength="30" name="name" id="id_name" type="text" value="">
                     <label for="id_name">Nombre del proyecto</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea white-text"></textarea>
+                    <textarea id="id_desc" name="desc_proy" class="materialize-textarea "></textarea>
                     <label for="id_desc">Descripción del proyecto</label>
                 </div>
-                <button class="input-field col s3 offset-s9 btn-large my-button" id="send_new_proj">crear proyecto</button>
+                <button class="input-field col s3 offset-s9 btn-large" id="send_new_proj">crear proyecto</button>
             </div>
         </form>
     </div>

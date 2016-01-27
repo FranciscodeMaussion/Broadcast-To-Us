@@ -20,7 +20,9 @@ def index(request):
 @login_required()
 def new_proy(request):
     context = RequestContext(request)
+    rol_user = Rol.objects.get(user = request.user)
     return render_to_response('n_proj.html',
+                              {'rol_user':rol_user},
                               context)
 
 @login_required()
@@ -47,12 +49,14 @@ def mod_proy(request, proj):
         idiomas = Idioma.objects.all()
         lenguajes = Lenguaje.objects.all()
         trabajos = Jobs.objects.all()
+        rol_user = Rol.objects.get(user = request.user)
         return render_to_response('m_proj.html',
                                   {'idiomas':idiomas,
                                    'lenguajes':lenguajes,
                                    'trabajos':trabajos,
                                    'proj':proj,
-                                   'works':proj.nescesita_w},
+                                   'works':proj.nescesita_w,
+                                  'rol_user':rol_user},
                                   context)
 
 @login_required()

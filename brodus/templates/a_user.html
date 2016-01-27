@@ -5,38 +5,38 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <div class="card-panel my-card">
+    <div class="card-panel">
         <form action="{% url 'brodus:new_user' %}" method="POST" enctype="multipart/form-data" id="create_user">
             {% csrf_token %}
             <div class="row">
                 <div class="input-field col s12 m6 l6">
                     <i class="fa fa-user prefix"></i>
-                    <input class="white-text" maxlength="30" name="username" id="id_username" type="text" value="">
+                    <input class="" maxlength="30" name="username" id="id_username" type="text" value="">
                     <label for="id_username">Nombre de usuario</label>
-                    <span class="helptext white-text">Obligatorio. Longitud máxima de 30 caracteres. Sólo puede estar formado por letras, números, guiones y puntos</span>
+                    <span class="helptext">Obligatorio. Longitud máxima de 30 caracteres. Sólo puede estar formado por letras, números, guiones y puntos</span>
                 </div>
                 <div class="input-field col s12 m6 l6">
                     <i class="fa fa-envelope prefix"></i>
-                    <input class="white-text" name="email" id="id_email" type="text" value="">
+                    <input class="" name="email" id="id_email" type="text" value="">
                     <label for="id_email">Email</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 m6 l6">
                     <i class="fa fa-lock prefix"></i>
-                    <input class="white-text" name="password1" id="id_password1" type="password" class="validate" value="">
+                    <input class="" name="password1" id="id_password1" type="password" class="validate" value="">
                     <label for="id_paassword1">Contraseña</label>
                 </div>
                 <div class="input-field col s12 m6 l6">
                     <i class="fa fa-lock prefix"></i>
-                    <input class="white-text" name="password2" id="id_password2" type="password" value="">
+                    <input class="" name="password2" id="id_password2" type="password" value="">
                     <label for="id_paassword2">Confirmación de contraseña</label>
-                    <span class="helptext white-text">Para verificación, introduzca la misma contraseña que introdujo en el campo anterior.</span>
+                    <span class="helptext ">Para verificación, introduzca la misma contraseña que introdujo en el campo anterior.</span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 m4 l4">
-                    <select multiple class="white-text" name="trabajos" id="trabajos">
+                    <select multiple class="" name="trabajos" id="trabajos">
                         <option value="" disabled selected>Elije</option>
                         {% for trabajo in trabajos %}
                         <option value="{{trabajo.id}}">{{trabajo}}</option>
@@ -45,7 +45,7 @@
                     <label>Trabajo</label>
                 </div>
                 <div class="input-field col s12 m4 l4">
-                    <select multiple class="white-text" name="idiomas" id="idiomas">
+                    <select multiple class="" name="idiomas" id="idiomas">
                         <option value="" disabled selected>Elije</option>
                         {% for idioma in idiomas %}
                         <option value="{{idioma.id}}">{{idioma}}</option>
@@ -54,7 +54,7 @@
                     <label>Idioma</label>
                 </div>
                 <div class="input-field col s12 m4 l4">
-                    <select multiple class="white-text" name="lenguajes" id="lenguajes">
+                    <select multiple class="" name="lenguajes" id="lenguajes">
                         <option value="" disabled selected>Elije</option>
                         {% for lenguaje in lenguajes %}
                         <option value="{{lenguaje.id}}">{{lenguaje}}</option>
@@ -63,9 +63,7 @@
                     <label>Lenguaje</label>
                 </div>
             </div>
-            <div class="card-panel my-button lighten-1 waves-effect waves-orange ">
-                <a class="btn-flat white-text" id="register"><i class="fa fa-paper-plane right"></i>Registrar</a>
-            </div>
+            <button class="btn-large waves-effect" id="register"><i class="fa fa-paper-plane right"></i>Registrar</button>
         </form>
     </div>
 </div>
