@@ -63,3 +63,4 @@ docs/_build/
 # PyBuilder
 target/
 /db.sqlite3
+/brodus/static/scss/.sass-cache/

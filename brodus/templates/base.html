@@ -4,9 +4,10 @@
     <head>
         <meta charset='utf-8'>
         <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
-        <link type="text/css" rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/font-awesome.css' %}" />
         <link rel="stylesheet" href="{% static 'css/my_style.css' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="icon" href="{% static 'img/broad_logo.png' %}" type="image/x-icon">
         {% block titulo %}
         {% endblock %}
     </head>
@@ -15,18 +16,19 @@
             <nav role="navigation">
                 <div class="nav-wrapper">
                     <div class="container">
-                        <a href="{% url 'brodus:index' %}" class="brand-logo">BroadUs</a>
+                        <a class="hide-on-med-and-down" href="{% url 'brodus:index' %}"><img src="{% static 'img/broad_b.png' %}" height="50em" width="50em" style="margin-top:0.35em"></a>
+                        <a href="{% url 'brodus:index' %}" class="brand-logo" style="font-size:1.5em;">&nbsp; BroadUs</a>
                         <ul class="right hide-on-med-and-down">
                             {% if rol_user.su %}
-                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Idioma"  href="#idioma_modal"><i class='fa fa-globe fa-2x'></i></a></li>
-                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Lenguaje" href="#lenguaje_modal"><i class='fa fa-terminal fa-2x'></i></a></li>
-                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Trabajo" href="#trabajo_modal"><i class='fa fa-briefcase fa-2x'></i></a></li>
+                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Idioma"  href="#idioma_modal"><i class='fa fa-globe fa-1-5x'></i></a></li>
+                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Lenguaje" href="#lenguaje_modal"><i class='fa fa-terminal fa-1-5x'></i></a></li>
+                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Trabajo" href="#trabajo_modal"><i class='fa fa-briefcase fa-1-5x'></i></a></li>
                             {% endif %}
                             {% if user.is_authenticated %}
-                            <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:new_proy' %}" data-tooltip="Nuevo Proyecto"><i class='fa fa-plus fa-2x'></i></a></li>
-                            <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_out' %}" data-tooltip="Log_out"><i class='fa fa-sign-out fa-2x'></i></a></li>
+                            <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:new_proy' %}" data-tooltip="Nuevo Proyecto"><i class='fa fa-plus fa-1-5x'></i></a></li>
+                            <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_out' %}" data-tooltip="Log_out"><i class='fa fa-sign-out fa-1-5x'></i></a></li>
                             {% else %}
-                            <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_in' %}" data-tooltip="Log_in"><i class='fa fa-sign-in fa-2x'></i></a></li>
+                            <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_in' %}" data-tooltip="Log_in"><i class='fa fa-sign-in fa-1-5x'></i></a></li>
                             {% endif %}
                         </ul>
                         <ul class="side-nav" style="right: -250px;" id="mobile-demo">
@@ -105,13 +107,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col l6 s12">
-                        <h5 class="">BroadUs</h5>
-                        <p class="grey-text text-lighten-4">No hace falta buscarnos</p>
+                        <h5>BroadUs</h5>
+                        <p>No hace falta buscarnos</p>
                     </div>
                     <div class="col l4 offset-l2 s12">
-                        <h5 class="">Links</h5>
+                        <h5 style="font-size:1.18em">Links</h5>
                         <ul>
-                            <li><a class="grey-text text-lighten-3" href="">Github</a></li>
+                            <li><a href="https://github.com/frandemo/Broadcast-To-Us" style="font-size:0.75em">Github</a></li>
                         </ul>
                     </div>
                 </div>
