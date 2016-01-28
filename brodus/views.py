@@ -100,6 +100,12 @@ def mod_proy(request, proj):
                                    'works':proj.nescesita_w,
                                   'rol_user':rol_user},
                                   context)
+@login_required()
+def del_proy(request, proj):
+    context = RequestContext(request)
+    proj = Proj.objects.get(id = proj)
+    proj.delete()
+    return redirect('/')
 
 @login_required()
 def n_p(request):
@@ -147,9 +153,8 @@ def d_p_w(request, w_p):
     proj = Proj.objects.get(id = w_p)
     work = Workers.objects.get(id = id_t)
     proj.nescesita_w.remove(work)
-    """if work.proj_set.all() == []:
-            work.eliminar def
-    """
+    if work.proj_set.all() == []:
+        work.delete()
     works = proj.nescesita_w
     return render_to_response('n_work.html',
                               {'works':works},

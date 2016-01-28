@@ -85,10 +85,12 @@
                         {% include "n_work.html" %}
                     </tbody>
                 </table>
-                <div class="input-field col s3 btn-large " id="del_proj">eliminar proyecto</div>
-                <div class="input-field col s3 push-s6 btn-large " id="send_proj">guardar proyecto</div>
             </div>
         </form>
+        <div class="row">
+            <a class="input-field col s3 btn-large " id="del_proj" href="{% url 'brodus:del_proy' proj.id %}">eliminar proyecto</a>
+            <div class="input-field col s3 push-s6 btn-large " id="send_proj">guardar proyecto</div>
+        </div>
     </div>
 </div>
 {% endblock %}
