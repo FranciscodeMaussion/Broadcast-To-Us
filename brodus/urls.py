@@ -10,5 +10,6 @@ urlpatterns = patterns('',
                        url(r'^new/proyecto$','brodus.views.new_proy', name='new_proy'),
                        url(r'^mod/proyecto/(?P<proj>[0-9]+)$','brodus.views.mod_proy', name='mod_proy'),
                        url(r'^add/work/(?P<w_p>[0-9]+)$','brodus.views.n_p_w', name='add_work'),
+                       url(r'^del/work/(?P<w_p>[0-9]+)$','brodus.views.d_p_w', name='del_work'),
                        url(r'^create/proj$','brodus.views.n_p', name='create_proj'),
                       )

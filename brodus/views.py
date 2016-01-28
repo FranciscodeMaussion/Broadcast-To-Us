@@ -76,6 +76,16 @@ def mod_proy(request, proj):
         for i in p_l:
             aux = Lenguaje.objects.get(id = i)
             proj.nescesita_l.add(aux)
+        for i in proj.rol_set.all():
+            rol_user = Rol.objects.get(id = i.id)
+            if proj in rol_user.proj_user.all():
+                if discover(proj,rol_user):
+                    rol_user.proj_user.add(proj)
+                else:
+                    rol_user.proj_user.remove(proj)
+            else:
+                if discover(proj,rol_user):
+                    rol_user.proj_user.add(proj)
         return redirect('/')
     else:
         idiomas = Idioma.objects.all()
@@ -125,6 +135,21 @@ def n_p_w(request, w_p):
     if a == False:
         work.save()
         proj.nescesita_w.add(work)
+    works = proj.nescesita_w
+    return render_to_response('n_work.html',
+                              {'works':works},
+                              context)
+
+@login_required()
+def d_p_w(request, w_p):
+    context = RequestContext(request)
+    id_t=request.POST['id_w']
+    proj = Proj.objects.get(id = w_p)
+    work = Workers.objects.get(id = id_t)
+    proj.nescesita_w.remove(work)
+    """if work.proj_set.all() == []:
+            work.eliminar def
+    """
     works = proj.nescesita_w
     return render_to_response('n_work.html',
                               {'works':works},
