@@ -9,26 +9,6 @@ from brodus.models import Jobs, Workers, Proj, Idioma, Lenguaje, Rol
 from django.conf import settings
 # Create your views here.
 
-@login_required()
-def index(request):
-    context = RequestContext(request)
-    rol_user = Rol.objects.get(user = request.user)
-    projects = Proj.objects.all()
-    print rol_user
-    print rol_user.proj_user.all()
-    a=[]
-    for key1 in projects:
-        if not key1 in rol_user.proj_user.all():
-            a.append(key1)
-    print a
-    if a != []:
-        for proj in a:
-            if discover(proj,rol_user):
-                rol_user.proj_user.add(proj)
-    return render_to_response('index.html',
-                          {'rol_user':rol_user},
-                          context)
-
 def compare(tags1, tags2):
     for key1 in tags1:
         if key1 in tags2:
@@ -49,6 +29,37 @@ def discover(proj,rol_user):
                     return True
     return False
 
+def su(request):
+    rol_user = Rol.objects.get(user = request.user)
+    if rol_user.su:
+        return True
+    return False
+
+def perm(request, per):
+    if per == request.user or su(request):
+        return True
+    return False
+
+@login_required()
+def index(request):
+    context = RequestContext(request)
+    rol_user = Rol.objects.get(user = request.user)
+    projects = Proj.objects.all()
+    print rol_user
+    print rol_user.proj_user.all()
+    a=[]
+    for key1 in projects:
+        if not key1 in rol_user.proj_user.all():
+            a.append(key1)
+    print a
+    if a != []:
+        for proj in a:
+            if discover(proj,rol_user):
+                rol_user.proj_user.add(proj)
+    return render_to_response('index.html',
+                          {'rol_user':rol_user},
+                          context)
+
 @login_required()
 def new_proy(request):
     context = RequestContext(request)
@@ -61,7 +72,7 @@ def new_proy(request):
 def mod_proy(request, proj):
     context = RequestContext(request)
     proj = Proj.objects.get(id = proj)
-    if request.method=='POST':
+    if perm(request, proj.owner) and request.method=='POST':
         print request.POST
         proj.nombre = request.POST['name']
         proj.desc = request.POST['desc_proy']
@@ -87,24 +98,24 @@ def mod_proy(request, proj):
                 if discover(proj,rol_user):
                     rol_user.proj_user.add(proj)
         return redirect('/')
-    else:
-        idiomas = Idioma.objects.all()
-        lenguajes = Lenguaje.objects.all()
-        trabajos = Jobs.objects.all()
-        rol_user = Rol.objects.get(user = request.user)
-        return render_to_response('m_proj.html',
-                                  {'idiomas':idiomas,
-                                   'lenguajes':lenguajes,
-                                   'trabajos':trabajos,
-                                   'proj':proj,
-                                   'works':proj.nescesita_w,
-                                  'rol_user':rol_user},
-                                  context)
+    idiomas = Idioma.objects.all()
+    lenguajes = Lenguaje.objects.all()
+    trabajos = Jobs.objects.all()
+    rol_user = Rol.objects.get(user = request.user)
+    return render_to_response('m_proj.html',
+                              {'idiomas':idiomas,
+                               'lenguajes':lenguajes,
+                               'trabajos':trabajos,
+                               'proj':proj,
+                               'works':proj.nescesita_w,
+                              'rol_user':rol_user},
+                              context)
 @login_required()
 def del_proy(request, proj):
     context = RequestContext(request)
     proj = Proj.objects.get(id = proj)
-    proj.delete()
+    if perm(request, proj.owner):
+        proj.delete()
     return redirect('/')
 
 @login_required()
@@ -124,23 +135,24 @@ def n_p(request):
 @login_required()
 def n_p_w(request, w_p):
     context = RequestContext(request)
-    id_t=request.POST['trab']
-    cant_t=request.POST['cant']
-    print cant_t
-    work = Workers()
-    work.tipo = Jobs.objects.get(id = id_t)
-    work.cantidad = cant_t
     proj = Proj.objects.get(id = w_p)
-    a = False
-    for i in proj.nescesita_w.all():
-        if i.tipo == work.tipo:
-            i.cantidad = int(work.cantidad) + int(i.cantidad)
-            i.save()
-            a = True
-            break
-    if a == False:
-        work.save()
-        proj.nescesita_w.add(work)
+    if perm(request, proj.owner):
+        id_t=request.POST['trab']
+        cant_t=request.POST['cant']
+        print cant_t
+        work = Workers()
+        work.tipo = Jobs.objects.get(id = id_t)
+        work.cantidad = cant_t
+        a = False
+        for i in proj.nescesita_w.all():
+            if i.tipo == work.tipo:
+                i.cantidad = int(work.cantidad) + int(i.cantidad)
+                i.save()
+                a = True
+                break
+        if a == False:
+            work.save()
+            proj.nescesita_w.add(work)
     works = proj.nescesita_w
     return render_to_response('n_work.html',
                               {'works':works},
@@ -149,12 +161,13 @@ def n_p_w(request, w_p):
 @login_required()
 def d_p_w(request, w_p):
     context = RequestContext(request)
-    id_t=request.POST['id_w']
     proj = Proj.objects.get(id = w_p)
-    work = Workers.objects.get(id = id_t)
-    proj.nescesita_w.remove(work)
-    if work.proj_set.all() == []:
-        work.delete()
+    if perm(request, proj.owner):
+        id_t=request.POST['id_w']
+        work = Workers.objects.get(id = id_t)
+        proj.nescesita_w.remove(work)
+        if work.proj_set.all() == []:
+            work.delete()
     works = proj.nescesita_w
     return render_to_response('n_work.html',
                               {'works':works},
@@ -235,7 +248,7 @@ def log_out(request):
 @login_required()
 def add_lenguaje(request):
     context = RequestContext(request)
-    if request.method=='POST':
+    if request.method=='POST' and su(request):
         l=Lenguaje()
         l.nombre=request.POST['nombre_lenguaje']
         l.save()
@@ -244,7 +257,7 @@ def add_lenguaje(request):
 @login_required()
 def add_idioma(request):
     context = RequestContext(request)
-    if request.method=='POST':
+    if request.method=='POST' and su(request):
         i=Idioma()
         i.nombre=request.POST['nombre_idioma']
         i.save()
@@ -253,7 +266,7 @@ def add_idioma(request):
 @login_required()
 def add_trabajo(request):
     context = RequestContext(request)
-    if request.method=='POST':
+    if request.method=='POST' and su(request):
         t=Jobs()
         t.nombre=request.POST['nombre_trabajo']
         t.desc=request.POST['desc_trabajo']
