@@ -4,6 +4,59 @@
 <title>Inicio</title>
 {% endblock %}
 {% block content %}
+<div class="row">
+    <div class="card-panel col s10 push-s1">
+        <h5 class="center">PROYECTOS</h5>
+        <table class="highlight col s12 centered">
+            <thead>
+                <tr>
+                    <th data-field="nombre">Nombre</th>
+                    <th data-field="desc">Descripción</th>
+                    <th data-field="idi">Idioma</th>
+                    <th data-field="len">Lenguaje de Programación</th>
+                    <th data-field="trab">Trabajos</th>
+                    <th data-field="dueño">Empleador</th>
+                </tr>
+            </thead>
+            <tbody id="invite_proj">
+                {% for j in rol_user.proj_user.all %}
+                <tr class="parent">
+                    <td>{{j.nombre}}</td>
+                    <td>{{j.desc}}</td>
+                    <td>
+                        {% for i in j.nescesita_i.all %}
+                        {% if forloop.last %}
+                        {{i.nombre}}
+                        {% else %}
+                        {{i.nombre}},
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for l in j.nescesita_l.all %}
+                        {% if forloop.last %}
+                        {{l.nombre}}
+                        {% else %}
+                        {{l.nombre}},
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for w in j.nescesita_w.all %}
+                        {% if forloop.last %}
+                        {{w.tipo}}
+                        {% else %}
+                        {{w.tipo}},
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{j.owner}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script>

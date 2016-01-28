@@ -13,9 +13,41 @@ from django.conf import settings
 def index(request):
     context = RequestContext(request)
     rol_user = Rol.objects.get(user = request.user)
+    projects = Proj.objects.all()
+    print rol_user
+    print rol_user.proj_user.all()
+    a=[]
+    for key1 in projects:
+        if not key1 in rol_user.proj_user.all():
+            a.append(key1)
+    print a
+    if a != []:
+        for proj in a:
+            if discover(proj,rol_user):
+                rol_user.proj_user.add(proj)
     return render_to_response('index.html',
-                              {'rol_user':rol_user},
-                              context)
+                          {'rol_user':rol_user},
+                          context)
+
+def compare(tags1, tags2):
+    for key1 in tags1:
+        if key1 in tags2:
+            return  True
+    return False
+
+"""a=[]
+else :
+a.append(key1)
+print key1 , " de " , tags1 , " / " , tags2 , " = " , a
+return a"""
+
+def discover(proj,rol_user):
+    if compare(proj.nescesita_l.all(),rol_user.lenguaje.all()):
+        if compare(proj.nescesita_i.all(),rol_user.idioma.all()):
+            for key1 in proj.nescesita_w.all():
+                if key1.tipo in rol_user.trabajo.all():
+                    return True
+    return False
 
 @login_required()
 def new_proy(request):

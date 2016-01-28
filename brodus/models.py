@@ -44,7 +44,7 @@ class Workers(models.Model):
     cantidad = models.IntegerField(u'Cantidad', default=0)
 
     def __str__(self):
-        return str(self.id)
+        return self.tipo.nombre.encode('utf8')
 
 class Proj(models.Model):
     class Meta:
@@ -66,12 +66,13 @@ class Rol(models.Model):
         verbose_name = "Rol"
         verbose_name_plural = "Roles"
 
-    trabajo = models.ManyToManyField(Jobs)
-    idioma = models.ManyToManyField(Idioma)
-    lenguaje = models.ManyToManyField(Lenguaje)
+    trabajo = models.ManyToManyField(Jobs, default=None, blank=True)
+    idioma = models.ManyToManyField(Idioma, default=None, blank=True)
+    lenguaje = models.ManyToManyField(Lenguaje, default=None, blank=True)
     user = models.OneToOneField(User, related_name="persona", default=None)
     nombre = models.CharField(u'Nombre', max_length=200, default=None, blank=True, null=True)
     su = models.BooleanField(u'Superuser', default=False)
+    proj_user = models.ManyToManyField(Proj, default=None, blank=True)
 
     def __str__(self):
         return self.nombre.encode('utf8')
