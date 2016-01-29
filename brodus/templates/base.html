@@ -19,11 +19,9 @@
                         <a class="hide-on-med-and-down" href="{% url 'brodus:index' %}"><img src="{% static 'img/broad_b.png' %}" height="50em" width="50em" style="margin-top:0.35em"></a>
                         <a href="{% url 'brodus:index' %}" class="brand-logo" style="font-size:1.5em;">&nbsp; BroadUs</a>
                         <ul class="right hide-on-med-and-down">
-                            {% if rol_user.su %}
-                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Idioma"  href="#idioma_modal"><i class='fa fa-globe fa-1-5x'></i></a></li>
-                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Lenguaje" href="#lenguaje_modal"><i class='fa fa-terminal fa-1-5x'></i></a></li>
-                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="Añadir Trabajo" href="#trabajo_modal"><i class='fa fa-briefcase fa-1-5x'></i></a></li>
-                            {% endif %}
+
+                            <li ><a class="tooltipped modal-trigger waves-effect waves-light " data-position="bottom" data-delay="50" data-tooltip="{% if rol_user.su %}Añadir{% else %}Sugerir{% endif %} Trabajo, Idioma o Lenguaje" href="#add_modal"><i class='fa fa-briefcase fa-1-5x'></i></a></li>
+
                             {% if user.is_authenticated %}
                             <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:new_proy' %}" data-tooltip="Nuevo Proyecto"><i class='fa fa-plus fa-1-5x'></i></a></li>
                             <li ><a class="tooltipped" data-position="bottom" data-delay="50" href="{% url 'brodus:log_out' %}" data-tooltip="Log_out"><i class='fa fa-sign-out fa-1-5x'></i></a></li>
@@ -32,11 +30,7 @@
                             {% endif %}
                         </ul>
                         <ul class="side-nav" style="right: -250px;" id="mobile-demo">
-                            {% if rol_user.su %}
-                            <li><a class="modal-trigger" href="#idioma_modal"><i class='fa fa-globe fa-fw'></i>&nbsp; Idioma</a></li>
-                            <li><a class="modal-trigger" href="#lenguaje_modal"><i class='fa fa-terminal fa-fw'></i>&nbsp; Lenguaje</a></li>
-                            <li><a class="modal-trigger" href="#trabajo_modal"><i class='fa fa-briefcase fa-fw'></i>&nbsp; Trabajo</a></li>
-                            {% endif %}
+                            <li><a class="modal-trigger" href="#add_modal"><i class='fa fa-briefcase fa-fw'></i>&nbsp; {% if rol_user.su %}Añadir{% else %}Sugerir{% endif %} Trabajo, Idioma o Lenguaje</a></li>
                             {% if user.is_authenticated %}
                             <li><a href="{% url 'brodus:log_out' %}"><i class='fa fa-sign-out fa-fw'></i>&nbsp; Log-out</a></li>
                             {% else %}
@@ -47,54 +41,33 @@
                     </div>
                 </div>
             </nav>
-            <div id="idioma_modal" class="modal">
-                <form action="{% url 'brodus:add_idioma' %}" method="POST" enctype="multipart/form-data" id="add_idioma">
-                    {% csrf_token %}
-                    <div class="modal-content">
-                        <div class="input-field">
-                            <input maxlength="30" name="nombre_idioma" id="nombre_idioma" type="text" value="">
-                            <label for="nombre_idioma">Nombre del Idioma</label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a onclick="send_me('idioma')" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Agregar</a>
-                        <a href="#!" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Cancelar</a>
-                    </div>
-                </form>
-            </div>
-            <div id="lenguaje_modal" class="modal">
-                <form action="{% url 'brodus:add_lenguaje' %}" method="POST" enctype="multipart/form-data" id="add_lenguaje">
-                    {% csrf_token %}
-                    <div class="modal-content">
-                        <div class="input-field">
-                            <input maxlength="30" name="nombre_lenguaje" id="nombre_lenguaje" type="text" value="">
-                            <label for="nombre_lenguaje">Nombre del Lenguaje</label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#!" onclick="send_me('lenguaje')" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Agregar</a>
-                        <a href="#!" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Cancelar</a>
-                    </div>
-                </form>
-            </div>
-            <div id="trabajo_modal" class="modal">
-                <form action="{% url 'brodus:add_trabajo' %}" method="POST" enctype="multipart/form-data" id="add_trabajo">
+            <div id="add_modal" class="modal">
+                <form action="{% url 'brodus:add_new' %}" method="POST" enctype="multipart/form-data" id="add_new">
                     {% csrf_token %}
                     <div class="modal-content">
                         <div class="modal-content">
-                            <div class="input-field">
-                                <input maxlength="30" name="nombre_trabajo" id="nombre_trabajo" type="text" value="">
-                                <label for="nombre_trabajo">Nombre del Trabajo</label>
+                            <div class="input-field col s5">
+                                <select class="" name="tipo_new" id="tipo_new">
+                                    <option value="" disabled selected>Elije</option>
+                                    <option value="Jobs()">Trabajo</option>
+                                    <option value="Idioma()">Idioma</option>
+                                    <option value="Lenguaje()">Lenguaje</option>
+                                </select>
+                                <label>Tipo</label>
                             </div>
                             <div class="input-field">
-                                <textarea id="desc_trabajo" name="desc_trabajo" class="materialize-textarea"></textarea>
-                                <label for="desc_trabajo">Descripción del trabajo</label>
+                                <input maxlength="30" name="nombre_new" id="nombre_new" type="text" value="">
+                                <label for="nombre_new">Nombre</label>
+                            </div>
+                            <div class="input-field">
+                                <textarea id="desc_new" name="desc_new" class="materialize-textarea"></textarea>
+                                <label for="desc_new">Descripción</label>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#!" onclick="send_me('trabajo')" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Agregar</a>
-                        <a href="#!" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Cancelar</a>
+                        <a onclick="send_me()" class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Agregar</a>
+                        <a class=" modal-action modal-close waves-effect btn-flat" style="color: rgba(255, 255, 255, 0.90);">Cancelar</a>
                     </div>
                 </form>
             </div>
@@ -134,22 +107,28 @@
             $('select').material_select();
             $('.modal-trigger').leanModal();
         });
-        function send_me(f){
-            if($('input:text[name=nombre_'+f+']').val()!=""){
-                /*$( '#add_'+f ).submit();*/
-                var formData = $( '#add_'+f ).serialize();
+        function send_me(){
+            if($('input:text[name=nombre_new]').val()!=""){
+                var data={
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    tipo_new:$('select[name=tipo_new]').val(),
+                    nombre_new:$('input[name=nombre_new]').val(),
+                    desc_new:$('textarea[name=desc_new]').val(),
+                };
                 $.ajax({
                     type: 'POST',
-                    url: $( '#add_'+f ).attr('action'),
-                    data: formData,
+                    url: $( '#add_new' ).attr('action'),
+                    data: data,
                     statusCode: {
                         202: function(){
-                            Materialize.toast('Se agrego correctamente el nuevo '+f, 2000);
-                            $( '#nombre_'+f ).val('')
-                            if ( f=='trabajo' ){
-                                $( '#desc_'+f ).val('')
-                            }
+                            Materialize.toast('Se agrego correctamente', 2000);
+                            $( '#nombre_new' ).val('')
+                            $( '#desc_new' ).val('')
                         },
+                    },
+                    error: function(err){
+                        console.log(err.responseText);
+                        console.log(data);
                     },
                 });
             }else{

@@ -56,6 +56,16 @@ def index(request):
         for proj in a:
             if discover(proj,rol_user):
                 rol_user.proj_user.add(proj)
+    if su(request):
+        idiomas = Idioma.objects.filter(active = False)
+        lenguajes = Lenguaje.objects.filter(active = False)
+        trabajos = Jobs.objects.filter(active = False)
+        return render_to_response('index.html',
+                          {'idiomas':idiomas,
+                           'lenguajes':lenguajes,
+                           'trabajos':trabajos,
+                           'rol_user':rol_user},
+                                  context)
     return render_to_response('index.html',
                           {'rol_user':rol_user},
                           context)
@@ -98,9 +108,9 @@ def mod_proy(request, proj):
                 if discover(proj,rol_user):
                     rol_user.proj_user.add(proj)
         return redirect('/')
-    idiomas = Idioma.objects.all()
-    lenguajes = Lenguaje.objects.all()
-    trabajos = Jobs.objects.all()
+    idiomas = Idioma.objects.filter(active = True)
+    lenguajes = Lenguaje.objects.filter(active = True)
+    trabajos = Jobs.objects.filter(active = True)
     rol_user = Rol.objects.get(user = request.user)
     return render_to_response('m_proj.html',
                               {'idiomas':idiomas,
@@ -200,9 +210,9 @@ def log_in(request):
 @requires_csrf_token
 def new_user(request):
     context = RequestContext(request)
-    idiomas = Idioma.objects.all()
-    lenguajes = Lenguaje.objects.all()
-    trabajos = Jobs.objects.all()
+    idiomas = Idioma.objects.filter(active = True)
+    lenguajes = Lenguaje.objects.filter(active = True)
+    trabajos = Jobs.objects.filter(active = True)
     if request.method=='POST':
         print request.POST
         n_u=User()
@@ -246,29 +256,13 @@ def log_out(request):
     return redirect('/')
 
 @login_required()
-def add_lenguaje(request):
+def add_new(request):
     context = RequestContext(request)
-    if request.method=='POST' and su(request):
-        l=Lenguaje()
-        l.nombre=request.POST['nombre_lenguaje']
-        l.save()
-    return HttpResponse(status=202)
-
-@login_required()
-def add_idioma(request):
-    context = RequestContext(request)
-    if request.method=='POST' and su(request):
-        i=Idioma()
-        i.nombre=request.POST['nombre_idioma']
-        i.save()
-    return HttpResponse(status=202)
-
-@login_required()
-def add_trabajo(request):
-    context = RequestContext(request)
-    if request.method=='POST' and su(request):
-        t=Jobs()
-        t.nombre=request.POST['nombre_trabajo']
-        t.desc=request.POST['desc_trabajo']
-        t.save()
+    if request.method=='POST':
+        n = eval(request.POST['tipo_new'])
+        n.nombre=request.POST['nombre_new']
+        n.desc=request.POST['desc_new']
+        if su(request):
+            n.active = True
+        n.save()
     return HttpResponse(status=202)

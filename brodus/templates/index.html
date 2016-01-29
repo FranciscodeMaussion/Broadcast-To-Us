@@ -22,7 +22,7 @@
                 {% for j in rol_user.proj_user.all %}
                 <tr>
                     <td>{{j.nombre}}</td>
-                    <td><textarea class="materialize-textarea center" disabled style="color:white; border-bottom-style:none">{{j.desc}}</textarea></td>
+                    <td><textarea class="materialize-textarea center" disabled style="color: white; border-bottom-style: none; margin-bottom: 0px; padding-bottom: 0px;">{{j.desc}}</textarea></td>
                     <td>
                         {% for i in j.nescesita_i.all %}
                         {% if forloop.last %}
@@ -56,6 +56,61 @@
             </tbody>
         </table>
     </div>
+    {% if rol_user.su %}
+    <div class="card-panel col s10 push-s1">
+        <h5 class="center">PETICIONES DE AGREGADO</h5>
+        <table class="highlight centered">
+            <thead>
+                <tr>
+                    <th data-field="nombre">Nombre</th>
+                    <th data-field="desc">Descripción</th>
+                    <th data-field="tipo">tipo</th>
+                </tr>
+            </thead>
+            <tbody id="invite_proj">
+                {% for i in idiomas %}
+                <tr>
+                    <td>{{i.nombre}}</td>
+                    <td>{{i.desc}}</td>
+                    <td>Idioma</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>No hay peticiones de idioma</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                {% endfor %}
+                {% for i in lenguajes %}
+                <tr>
+                    <td>{{i.nombre}}</td>
+                    <td>{{i.desc}}</td>
+                    <td>Lenguaje</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>No hay peticiones de lenguaje</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                {% endfor %}
+                {% for i in trabajos %}
+                <tr>
+                    <td>{{i.nombre}}</td>
+                    <td>{{i.desc}}</td>
+                    <td>Trabajo</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>No hay peticiones de trabajo</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 {% block scripts %}

@@ -10,6 +10,8 @@ class Lenguaje(models.Model):
         verbose_name_plural = "Lenguajes de programación"
 
     nombre = models.CharField(u'Nombre', max_length=200)
+    desc = models.CharField(u'Descripción', max_length=400, default=None, blank=True)
+    active = models.BooleanField(u'Activo', default=False)
 
     def __str__(self):
         return self.nombre.encode('utf8')
@@ -20,6 +22,8 @@ class Idioma(models.Model):
         verbose_name_plural = "Idiomas"
 
     nombre = models.CharField(u'Nombre', max_length=200)
+    desc = models.CharField(u'Descripción', max_length=400, default=None, blank=True)
+    active = models.BooleanField(u'Activo', default=False)
 
     def __str__(self):
         return self.nombre.encode('utf8')
@@ -30,7 +34,8 @@ class Jobs(models.Model):
         verbose_name_plural = "Trabajos"
 
     nombre = models.CharField(u'Nombre', max_length=200)
-    desc = models.CharField(u'Descripción', max_length=400)
+    desc = models.CharField(u'Descripción', max_length=400, default=None, blank=True)
+    active = models.BooleanField(u'Activo', default=False)
 
     def __str__(self):
         return self.nombre.encode('utf8')

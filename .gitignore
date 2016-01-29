@@ -64,3 +64,4 @@ docs/_build/
 target/
 /db.sqlite3
 /brodus/static/scss/.sass-cache/
+/.sass-cache

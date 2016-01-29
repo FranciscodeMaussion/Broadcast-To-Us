@@ -6210,7 +6210,7 @@ a.waves-effect .waves-ripple {
   position: fixed;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #000000;
   padding: 0;
   max-height: 70%;
   width: 55%;
