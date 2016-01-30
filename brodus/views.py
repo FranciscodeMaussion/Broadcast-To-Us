@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import requires_csrf_token
 from brodus.models import Jobs, Workers, Proj, Idioma, Lenguaje, Rol
 from django.conf import settings
+from omnibus.factories import websocket_connection_factory
+from omnibus.api import publish
+from django.template.loader import get_template
 # Create your views here.
 
 def compare(tags1, tags2):
@@ -39,6 +42,20 @@ def perm(request, per):
     if per == request.user or su(request):
         return True
     return False
+
+@login_required()
+def channel(request):
+    context = RequestContext(request)
+    rol_user = Rol.objects.get(user = request.user)
+    if request.method=='POST':
+        proj = Proj.objects.get(id = request.POST['id_proy'])
+        if discover(proj,rol_user):
+            rol_user.proj_user.add(proj)
+        else:
+            rol_user.proj_user.remove(proj)
+    return render_to_response('proj_user.html',
+                          {'rol_user':rol_user},
+                          context)
 
 @login_required()
 def index(request):
@@ -107,6 +124,12 @@ def mod_proy(request, proj):
             else:
                 if discover(proj,rol_user):
                     rol_user.proj_user.add(proj)
+        publish(
+            'proy',
+            'reload',
+            {"id_proy":proj.id},
+            sender='server'  # sender id of the event, can be None.
+        )
         return redirect('/')
     idiomas = Idioma.objects.filter(active = True)
     lenguajes = Lenguaje.objects.filter(active = True)

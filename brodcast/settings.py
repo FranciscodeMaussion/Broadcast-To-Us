@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'omnibus',
     'brodus',
 )
 
@@ -65,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'omnibus.context_processors.omnibus',
             ],
         },
     },
@@ -100,6 +102,38 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'simple': {'format': '%(levelname)s %(asctime)s %(name)s %(message)s'},
+        'short': {'format': '%(levelname)s %(asctime)s %(message)s'},
+        'verbose': {'format': '%(levelname)s %(asctime)s %(name)s %(message)s\n%(request)s'},
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'short',
+        },
+    },
+    'loggers': {
+        'omnibus': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}
+
+OMNIBUS_ENDPOINT_SCHEME = 'ws'  # 'ws' is used for websocket connections
+OMNIBUS_WEBAPP_FACTORY = 'omnibus.factories.websocket_webapp_factory'
+OMNIBUS_CONNECTION_FACTORY = 'omnibus.factories.websocket_connection_factory'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + '/static/'

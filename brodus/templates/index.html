@@ -19,40 +19,7 @@
                 </tr>
             </thead>
             <tbody id="invite_proj">
-                {% for j in rol_user.proj_user.all %}
-                <tr>
-                    <td>{{j.nombre}}</td>
-                    <td><textarea class="materialize-textarea center" disabled style="color: white; border-bottom-style: none; margin-bottom: 0px; padding-bottom: 0px;">{{j.desc}}</textarea></td>
-                    <td>
-                        {% for i in j.nescesita_i.all %}
-                        {% if forloop.last %}
-                        {{i.nombre}}
-                        {% else %}
-                        {{i.nombre}},
-                        {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for l in j.nescesita_l.all %}
-                        {% if forloop.last %}
-                        {{l.nombre}}
-                        {% else %}
-                        {{l.nombre}},
-                        {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for w in j.nescesita_w.all %}
-                        {% if forloop.last %}
-                        {{w.tipo}}
-                        {% else %}
-                        {{w.tipo}},
-                        {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{{j.owner}}</td>
-                </tr>
-                {% endfor %}
+                {% include "proj_user.html" %}
             </tbody>
         </table>
     </div>
@@ -83,6 +50,29 @@
 {% endblock %}
 {% block scripts %}
 <script>
+    channel.on('reload', function(event) {
+        /*$(event.data.payload.loader).html(event.data.payload.data);
+            console.log("anduvo");*/
+        var data={
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            id_proy:event.data.payload.id_proy
+        }
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'brodus:channel' %}",
+            data:data,
+            success:function(result){
+                $('#invite_proj').html(result);
+                Materialize.toast('Todo ok', 2000);
+            },
+            error: function(err){
+                console.log(err.responseText);
+                console.log(data);
+            },
+        });
+
+    });
+
     function add_active(id,tipo, helper, tDo){
         var data={
             csrfmiddlewaretoken: '{{ csrf_token }}',

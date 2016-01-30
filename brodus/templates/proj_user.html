@@ -1,0 +1,34 @@
+{% for j in rol_user.proj_user.all %}
+<tr>
+    <td>{{j.nombre}}</td>
+    <td><textarea class="materialize-textarea center" disabled style="color: white; border-bottom-style: none; margin-bottom: 0px; padding-bottom: 0px;">{{j.desc}}</textarea></td>
+    <td>
+        {% for i in j.nescesita_i.all %}
+        {% if forloop.last %}
+        {{i.nombre}}
+        {% else %}
+        {{i.nombre}},
+        {% endif %}
+        {% endfor %}
+    </td>
+    <td>
+        {% for l in j.nescesita_l.all %}
+        {% if forloop.last %}
+        {{l.nombre}}
+        {% else %}
+        {{l.nombre}},
+        {% endif %}
+        {% endfor %}
+    </td>
+    <td>
+        {% for w in j.nescesita_w.all %}
+        {% if forloop.last %}
+        {{w.tipo}}
+        {% else %}
+        {{w.tipo}},
+        {% endif %}
+        {% endfor %}
+    </td>
+    <td>{{j.owner}}</td>
+</tr>
+{% endfor %}
