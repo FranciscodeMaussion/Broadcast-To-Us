@@ -67,46 +67,14 @@
                     <th data-field="tipo">tipo</th>
                 </tr>
             </thead>
-            <tbody id="invite_proj">
-                {% for i in idiomas %}
-                <tr>
-                    <td>{{i.nombre}}</td>
-                    <td>{{i.desc}}</td>
-                    <td>Idioma</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td>No hay peticiones de idioma</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
-                {% endfor %}
-                {% for i in lenguajes %}
-                <tr>
-                    <td>{{i.nombre}}</td>
-                    <td>{{i.desc}}</td>
-                    <td>Lenguaje</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td>No hay peticiones de lenguaje</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
-                {% endfor %}
-                {% for i in trabajos %}
-                <tr>
-                    <td>{{i.nombre}}</td>
-                    <td>{{i.desc}}</td>
-                    <td>Trabajo</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td>No hay peticiones de trabajo</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
-                {% endfor %}
+            <tbody id="r_idioma">
+                {% include "obj_i.html" %}
+            </tbody>
+            <tbody id="r_lenguaje">
+                {% include "obj_l.html" %}
+            </tbody>
+            <tbody id="r_trabajo">
+                {% include "obj_t.html" %}
             </tbody>
         </table>
     </div>
@@ -115,5 +83,30 @@
 {% endblock %}
 {% block scripts %}
 <script>
+    function add_active(id,tipo, helper, tDo){
+        var data={
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            id:parseInt(id.id),
+            tipo:tipo,
+            tDo:tDo,
+        }
+        $.ajax({
+            method: "POST",
+            url: "{% url 'brodus:add_active' %}",
+            data: data,
+            success:function(result){
+                $('#'+helper).html(result);
+                if (tDo == "True"){
+                    Materialize.toast('Aceptado', 2000);
+                }else{
+                    Materialize.toast('Eliminado', 2000);
+                }
+            },
+            error: function(e){
+                console.log(e.responseText);
+                Materialize.toast('Error', 2000);
+            },
+        });
+    }
 </script>
 {% endblock %}

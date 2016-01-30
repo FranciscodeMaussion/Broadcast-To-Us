@@ -266,3 +266,28 @@ def add_new(request):
             n.active = True
         n.save()
     return HttpResponse(status=202)
+
+@login_required()
+def add_active(request):
+    context = RequestContext(request)
+    if request.method=='POST' and su(request):
+        tipo_a = request.POST['tipo']
+        id_a = request.POST['id']
+        print id_a, tipo_a
+        pos = {"Idioma":Idioma,"Lenguaje":Lenguaje,"Jobs":Jobs}
+        sender = {"Idioma":'idiomas',"Lenguaje":'lenguajes',"Jobs":'trabajos'}
+        pager = {"Idioma":'obj_i.html',"Lenguaje":'obj_l.html',"Jobs":'obj_t.html'}
+        aux = tipo_a + ".objects.get(id = "+ id_a + ")"
+        print aux
+        obj = eval(aux, pos)
+        print obj
+        if request.POST['tDo']=="True":
+            obj.active = True
+            obj.save()
+        else:
+            obj.delete()
+        aux = tipo_a + ".objects.filter(active = False)"
+        objs = eval(aux, pos)
+        return render_to_response(pager[tipo_a],
+                              {sender[tipo_a]:objs},
+                              context)

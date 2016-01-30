@@ -1,0 +1,18 @@
+{% for i in lenguajes %}
+<tr>
+    <td>{{i.nombre}}</td>
+    <td>{{i.desc}}</td>
+    <td>Lenguaje
+        <div class="right">
+            <a id="{{i.id}}" onclick="add_active(this, 'Lenguaje', 'r_lenguaje', 'True')" style="cursor:pointer;"><i class="fa fa-check"></i></a>
+            <a id="{{i.id}}" onclick="add_active(this, 'Lenguaje', 'r_lenguaje', 'False')" style="cursor:pointer;"><i class="fa fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td>No hay peticiones de lenguaje</td>
+    <td>-</td>
+    <td>-</td>
+</tr>
+{% endfor %}

@@ -1,0 +1,18 @@
+{% for i in trabajos %}
+<tr>
+    <td>{{i.nombre}}</td>
+    <td>{{i.desc}}</td>
+    <td>Trabajo
+        <div class="right">
+            <a id="{{i.id}}" onclick="add_active(this, 'Jobs', 'r_trabajo', 'True')" style="cursor:pointer;"><i class="fa fa-check"></i></a>
+            <a id="{{i.id}}" onclick="add_active(this, 'Jobs', 'r_trabajo', 'False')" style="cursor:pointer;"><i class="fa fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td>No hay peticiones de trabajo</td>
+    <td>-</td>
+    <td>-</td>
+</tr>
+{% endfor %}
