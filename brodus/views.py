@@ -96,6 +96,19 @@ def new_proy(request):
                               context)
 
 @login_required()
+def show_proy(request, proj):
+    context = RequestContext(request)
+    proj = Proj.objects.get(id = proj)
+    rol_user = Rol.objects.get(user = request.user)
+    return render_to_response('s_proj.html',
+                              {'proj':proj,
+                              'rol_user':rol_user,
+                              'works':proj.nescesita_w,
+                              'perm':False,
+                              'owns':perm(request, proj.owner)},
+                              context)
+
+@login_required()
 def mod_proy(request, proj):
     context = RequestContext(request)
     proj = Proj.objects.get(id = proj)
@@ -141,7 +154,8 @@ def mod_proy(request, proj):
                                'trabajos':trabajos,
                                'proj':proj,
                                'works':proj.nescesita_w,
-                              'rol_user':rol_user},
+                              'rol_user':rol_user,
+                              'perm':perm(request, proj.owner)},
                               context)
 @login_required()
 def del_proy(request, proj):
@@ -161,7 +175,7 @@ def n_p(request):
         proy.desc = desc
         proy.owner = request.user
         proy.save()
-        path = "/mod/proyecto/"+str(proy.id)#ID aca!!!!
+        path = "/proyecto/mod/"+str(proy.id)#ID aca!!!!
         return redirect(path)
     return HttpResponse(status=203)
 
@@ -288,6 +302,27 @@ def add_new(request):
         if su(request):
             n.active = True
         n.save()
+        if not su(request):
+            tipo_a = request.POST['tipo_new']
+            sender = {"Idioma()":'idiomas',"Lenguaje()":'lenguajes',"Jobs()":'trabajos'}
+            pager = {"Idioma()":'obj_i.html',"Lenguaje()":'obj_l.html',"Jobs()":'obj_t.html'}
+            helper = "#r_" + sender[tipo_a].partition("s")[0]
+            print helper
+            template = get_template(pager[tipo_a])
+            print template
+            aux = tipo_a.partition("(")[0] + ".objects.filter(active = False)"
+            objs = eval(aux)
+            context[sender[tipo_a]]=objs
+            print context
+            html = template.render(context)
+            print html
+            publish(
+                'proy',
+                'su',
+                { 'loader' : helper,
+                    'data' : html},
+                sender='server'  # sender id of the event, can be None.
+            )
     return HttpResponse(status=202)
 
 @login_required()
@@ -311,6 +346,22 @@ def add_active(request):
             obj.delete()
         aux = tipo_a + ".objects.filter(active = False)"
         objs = eval(aux, pos)
+        print "----"
+        helper = "#r_" + sender[tipo_a].partition("s")[0]
+        print helper
+        template = get_template(pager[tipo_a])
+        print template
+        context[sender[tipo_a]]=objs
+        print context
+        html = template.render(context)
+        print html
+        publish(
+            'proy',
+            'su',
+            { 'loader' : helper,
+                'data' : html},
+            sender='server'  # sender id of the event, can be None.
+        )
         return render_to_response(pager[tipo_a],
                               {sender[tipo_a]:objs},
                               context)

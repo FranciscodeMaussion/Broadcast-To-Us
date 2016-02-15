@@ -11,7 +11,6 @@
             <thead>
                 <tr>
                     <th data-field="nombre">Nombre</th>
-                    <th data-field="desc">Descripción</th>
                     <th data-field="idi">Idioma</th>
                     <th data-field="len">Lenguaje de Programación</th>
                     <th data-field="trab">Trabajos</th>
@@ -50,6 +49,37 @@
 {% endblock %}
 {% block scripts %}
 <script>
+    {% if rol_user.su %}
+    channel.on('su', function(event) {
+        $(event.data.payload.loader).html(event.data.payload.data);
+        console.log("anduvo");
+    });
+    function add_active(id,tipo, helper, tDo){
+        var data={
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            id:parseInt(id.id),
+            tipo:tipo,
+            tDo:tDo,
+        }
+        $.ajax({
+            method: "POST",
+            url: "{% url 'brodus:add_active' %}",
+            data: data,
+            success:function(result){
+                /*$('#'+helper).html(result);*/
+                if (tDo == "True"){
+                    Materialize.toast('Aceptado', 2000);
+                }else{
+                    Materialize.toast('Eliminado', 2000);
+                }
+            },
+            error: function(e){
+                console.log(e.responseText);
+                Materialize.toast('Error', 2000);
+            },
+        });
+    }
+    {% endif %}
     channel.on('reload', function(event) {
         /*$(event.data.payload.loader).html(event.data.payload.data);
             console.log("anduvo");*/
@@ -72,31 +102,5 @@
         });
 
     });
-
-    function add_active(id,tipo, helper, tDo){
-        var data={
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            id:parseInt(id.id),
-            tipo:tipo,
-            tDo:tDo,
-        }
-        $.ajax({
-            method: "POST",
-            url: "{% url 'brodus:add_active' %}",
-            data: data,
-            success:function(result){
-                $('#'+helper).html(result);
-                if (tDo == "True"){
-                    Materialize.toast('Aceptado', 2000);
-                }else{
-                    Materialize.toast('Eliminado', 2000);
-                }
-            },
-            error: function(e){
-                console.log(e.responseText);
-                Materialize.toast('Error', 2000);
-            },
-        });
-    }
 </script>
 {% endblock %}

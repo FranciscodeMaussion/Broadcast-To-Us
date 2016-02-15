@@ -3,11 +3,13 @@
     <td>{{work.tipo}}</td>
     <td>
         {{work.cantidad}}
+        {% if perm %}
         <div class="right">
             <a id="{{work.id}}" onclick="add_work({{work.tipo.id}}, '+1')" style="cursor:pointer;"><i class="fa fa-plus"></i></a>
             <a id="{{work.id}}" onclick="add_work({{work.tipo.id}}, '-1')" style="cursor:pointer;"><i class="fa fa-minus"></i></a>
             <a id="{{work.id}}" onclick="del_work(this)" style="cursor:pointer;"><i class="fa fa-trash"></i></a>
         </div>
+        {% endif %}
     </td>
 </tr>
 {% endfor %}

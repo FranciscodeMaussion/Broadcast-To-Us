@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}
+<title>{{proj.nombre}}</title>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card-panel">
+        <div class="row">
+            <div class="right">
+                <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Participar en el Proyecto" href="{% url 'brodus:show_proy' proj.id %}"><i class='fa fa-coffee fa-fw'></i></a>
+                {% if owns %}
+                <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Modificar Proyecto" href="{% url 'brodus:mod_proy' proj.id %}"><i class='fa fa-wrench fa-fw'></i></a>
+                <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Eliminar Proyecto" href="{% url 'brodus:del_proy' proj.id %}"><i class='fa fa-trash fa-fw'></i></a>
+                {% endif %}
+            </div>
+            <h3 class="input-field col s6 m4">
+                {{proj.nombre}}
+            </h3>
+            <p class="col s12">{{proj.desc}}</p>
+            <table class="highlight col s10 push-s1 centered">
+                <thead>
+                    <tr>
+                        <th data-field="type_work">Tipo de Trabajo</th>
+                        <th data-field="cant_work">Cantiad de Trabajadores</th>
+                    </tr>
+                </thead>
+                <tbody id="add_jobs">
+                    {% include "n_work.html" %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
